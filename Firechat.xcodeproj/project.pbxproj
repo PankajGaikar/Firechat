@@ -7,8 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C07B9471DF302A6006E753D /* ConversationListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08D9B01DF3008700EEB6DF /* ConversationListCell.swift */; };
+		2C07B9491DF30812006E753D /* ShowAllProfilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C07B9481DF30812006E753D /* ShowAllProfilesViewController.swift */; };
+		2C07B94C1DF3421E006E753D /* ContactDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C07B94A1DF341A0006E753D /* ContactDetailCell.swift */; };
+		2C07B94E1DF359E4006E753D /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C07B94D1DF359E4006E753D /* ConversationViewController.swift */; };
+		2C07B9531DF35B18006E753D /* MessageFromYouCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C07B94F1DF35AA4006E753D /* MessageFromYouCell.swift */; };
+		2C07B9541DF35B18006E753D /* MessageFromMeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C07B9511DF35AD3006E753D /* MessageFromMeCell.swift */; };
+		2C08D9A81DF2A68900EEB6DF /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08D9A61DF2A5A800EEB6DF /* SignUpViewController.swift */; };
+		2C08D9A91DF2AAC100EEB6DF /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4229111DF1E1FB00B1E2FC /* SignInViewController.swift */; };
+		2C08D9AB1DF2B20800EEB6DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C08D9AA1DF2B20700EEB6DF /* GoogleService-Info.plist */; };
+		2C08D9AF1DF2CB5C00EEB6DF /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08D9AE1DF2CB5C00EEB6DF /* ConversationsListViewController.swift */; };
 		2C4229101DF1E1FB00B1E2FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42290F1DF1E1FB00B1E2FC /* AppDelegate.swift */; };
-		2C4229121DF1E1FB00B1E2FC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4229111DF1E1FB00B1E2FC /* ViewController.swift */; };
 		2C4229151DF1E1FC00B1E2FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C4229131DF1E1FC00B1E2FC /* Main.storyboard */; };
 		2C4229171DF1E1FC00B1E2FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C4229161DF1E1FC00B1E2FC /* Assets.xcassets */; };
 		2C42291A1DF1E1FC00B1E2FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C4229181DF1E1FC00B1E2FC /* LaunchScreen.storyboard */; };
@@ -16,9 +25,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C07B9481DF30812006E753D /* ShowAllProfilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowAllProfilesViewController.swift; sourceTree = "<group>"; };
+		2C07B94A1DF341A0006E753D /* ContactDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailCell.swift; sourceTree = "<group>"; };
+		2C07B94D1DF359E4006E753D /* ConversationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
+		2C07B94F1DF35AA4006E753D /* MessageFromYouCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageFromYouCell.swift; sourceTree = "<group>"; };
+		2C07B9511DF35AD3006E753D /* MessageFromMeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageFromMeCell.swift; sourceTree = "<group>"; };
+		2C08D9A61DF2A5A800EEB6DF /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		2C08D9AA1DF2B20700EEB6DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2C08D9AE1DF2CB5C00EEB6DF /* ConversationsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
+		2C08D9B01DF3008700EEB6DF /* ConversationListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListCell.swift; sourceTree = "<group>"; };
 		2C42290C1DF1E1FB00B1E2FC /* Firechat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Firechat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C42290F1DF1E1FB00B1E2FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2C4229111DF1E1FB00B1E2FC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		2C4229111DF1E1FB00B1E2FC /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		2C4229141DF1E1FC00B1E2FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2C4229161DF1E1FC00B1E2FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C4229191DF1E1FC00B1E2FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -61,12 +79,21 @@
 		2C42290E1DF1E1FB00B1E2FC /* Firechat */ = {
 			isa = PBXGroup;
 			children = (
+				2C08D9AE1DF2CB5C00EEB6DF /* ConversationsListViewController.swift */,
+				2C07B9481DF30812006E753D /* ShowAllProfilesViewController.swift */,
 				2C42290F1DF1E1FB00B1E2FC /* AppDelegate.swift */,
-				2C4229111DF1E1FB00B1E2FC /* ViewController.swift */,
+				2C4229111DF1E1FB00B1E2FC /* SignInViewController.swift */,
+				2C08D9A61DF2A5A800EEB6DF /* SignUpViewController.swift */,
+				2C08D9B01DF3008700EEB6DF /* ConversationListCell.swift */,
 				2C4229131DF1E1FC00B1E2FC /* Main.storyboard */,
 				2C4229161DF1E1FC00B1E2FC /* Assets.xcassets */,
 				2C4229181DF1E1FC00B1E2FC /* LaunchScreen.storyboard */,
 				2C42291B1DF1E1FC00B1E2FC /* Info.plist */,
+				2C08D9AA1DF2B20700EEB6DF /* GoogleService-Info.plist */,
+				2C07B94A1DF341A0006E753D /* ContactDetailCell.swift */,
+				2C07B94D1DF359E4006E753D /* ConversationViewController.swift */,
+				2C07B94F1DF35AA4006E753D /* MessageFromYouCell.swift */,
+				2C07B9511DF35AD3006E753D /* MessageFromMeCell.swift */,
 			);
 			path = Firechat;
 			sourceTree = "<group>";
@@ -152,6 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C42291A1DF1E1FC00B1E2FC /* LaunchScreen.storyboard in Resources */,
+				2C08D9AB1DF2B20800EEB6DF /* GoogleService-Info.plist in Resources */,
 				2C4229171DF1E1FC00B1E2FC /* Assets.xcassets in Resources */,
 				2C4229151DF1E1FC00B1E2FC /* Main.storyboard in Resources */,
 			);
@@ -212,7 +240,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C4229121DF1E1FB00B1E2FC /* ViewController.swift in Sources */,
+				2C07B9531DF35B18006E753D /* MessageFromYouCell.swift in Sources */,
+				2C07B9541DF35B18006E753D /* MessageFromMeCell.swift in Sources */,
+				2C07B94C1DF3421E006E753D /* ContactDetailCell.swift in Sources */,
+				2C07B9471DF302A6006E753D /* ConversationListCell.swift in Sources */,
+				2C07B94E1DF359E4006E753D /* ConversationViewController.swift in Sources */,
+				2C07B9491DF30812006E753D /* ShowAllProfilesViewController.swift in Sources */,
+				2C08D9A91DF2AAC100EEB6DF /* SignInViewController.swift in Sources */,
+				2C08D9AF1DF2CB5C00EEB6DF /* ConversationsListViewController.swift in Sources */,
+				2C08D9A81DF2A68900EEB6DF /* SignUpViewController.swift in Sources */,
 				2C4229101DF1E1FB00B1E2FC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,6 +415,7 @@
 				2C4229201DF1E1FC00B1E2FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
