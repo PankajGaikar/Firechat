@@ -22,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         var viewController: UIViewController;
-        if(( FIRAuth.auth()?.currentUser ) != nil)
+        if( (FirechatManager.sharedManager.user) != nil)
         {
-            viewController = storyboard.instantiateViewController(withIdentifier: "ConversationListViewController") as! ConversationsListViewController
+            viewController = storyboard.instantiateViewController(withIdentifier: "ActiveConversationsViewController") as! ActiveConversationsViewController
             let navController = UINavigationController.init(rootViewController: viewController)
             self.window?.rootViewController = navController
         }

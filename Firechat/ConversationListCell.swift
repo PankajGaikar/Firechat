@@ -10,7 +10,6 @@ import UIKit
 
 class ConversationListCell: UITableViewCell
 {
-    
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var contactName: UILabel!
     @IBOutlet weak var message: UILabel!

@@ -9,22 +9,7 @@
 import UIKit
 import FirebaseDatabase
 
-extension UIImageView {
-    public func imageFromServerURL(urlString: String) {
-        
-        URLSession.shared.dataTask(with: NSURL(string: urlString)! as URL, completionHandler: { (data, response, error) -> Void in
-            
-            if error != nil {
-                print(error)
-                return
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                let image = UIImage(data: data!)
-                self.image = image
-            })
-            
-        }).resume()
-    }}
+
 
 class ShowAllProfilesViewController: UITableViewController
 {
@@ -32,7 +17,8 @@ class ShowAllProfilesViewController: UITableViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        FIRDatabase.database().reference().keepSynced(true)
+        
         FIRDatabase.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
             self.usersInfo = (snapshot.value as? NSDictionary)!
             self.tableView.reloadData()
@@ -62,7 +48,14 @@ class ShowAllProfilesViewController: UITableViewController
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "StartNewConversation", sender: self)
+        let indexKey: NSArray = self.usersInfo.allKeys as NSArray;
+        self.performSegue(withIdentifier: "StartNewConversation", sender: self.usersInfo.object(forKey: indexKey.object(at: indexPath.row)))
+        
         self.navigationController?.viewControllers.remove(at: (self.navigationController?.viewControllers.count)! - 2)
+    }
+    
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ConversationsViewController
+        destinationVC.otherUser = sender as! NSDictionary
     }
 }

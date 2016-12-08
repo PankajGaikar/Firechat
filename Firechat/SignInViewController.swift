@@ -15,7 +15,6 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var passwordTxt: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
     @IBAction func signInAction(_ sender: AnyObject) {

@@ -55,10 +55,11 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                         let downloadURL = storageMetadata?.downloadURL()!.absoluteString
                         //store downloadURL at database
                         let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid)
-                            
+                        
                         child.updateChildValues(["userPhoto": downloadURL! as String])
                         child.updateChildValues(["username": self.usernameTxt.text! as String])
                         child.updateChildValues(["email": self.emailTxt.text! as String])
+                        child.updateChildValues(["key": child.key as String])                        
                         self.performSegue(withIdentifier: "UserCreated", sender: self)
                     }
                 })
