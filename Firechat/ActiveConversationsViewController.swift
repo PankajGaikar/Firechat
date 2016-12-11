@@ -85,22 +85,22 @@ class ActiveConversationsViewController: UITableViewController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ConversationListCell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath) as! ConversationListCell
-        let user = self.users.object(at: indexPath.row) as! NSDictionary
+        let user = self.users.object(at: indexPath.row) as! FirechatContact
         
-        cell.profileImage.imageFromServerURL(urlString: user.value(forKey: "userPhoto") as! String)
-        cell.contactName.text = user.value(forKey: "username") as? String
+        cell.profileImage.imageFromServerURL(urlString: user.userPhotoURI)
+        cell.contactName.text = user.username
         return cell;
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "ResumeConversation", sender: self.users.object(at: indexPath.row) as! NSDictionary)
+        self.performSegue(withIdentifier: "ResumeConversation", sender: self.users.object(at: indexPath.row) as! FirechatContact)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ResumeConversation"
         {
             let destinationVC = segue.destination as! ConversationsViewController
-            destinationVC.otherUser = sender as! NSDictionary
+            destinationVC.otherUser = sender as! FirechatContact
         }
         
     }

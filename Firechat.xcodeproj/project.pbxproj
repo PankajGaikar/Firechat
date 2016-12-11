@@ -85,21 +85,12 @@
 		2C42290E1DF1E1FB00B1E2FC /* Firechat */ = {
 			isa = PBXGroup;
 			children = (
+				2C8499631DFDAA5D009916F8 /* Base */,
+				2C8499651DFDAADB009916F8 /* Resources */,
+				2C8499611DFDA9A0009916F8 /* ModelClass */,
+				2C8499621DFDAA40009916F8 /* Common */,
 				2C4A8B391DF3F98E00950569 /* CustomCells */,
-				2C08D9AE1DF2CB5C00EEB6DF /* ActiveConversationsViewController.swift */,
-				2C07B94D1DF359E4006E753D /* ConversationViewController.swift */,
-				2C07B9481DF30812006E753D /* ShowAllProfilesViewController.swift */,
-				2C42290F1DF1E1FB00B1E2FC /* AppDelegate.swift */,
-				2C4229111DF1E1FB00B1E2FC /* SignInViewController.swift */,
-				2C08D9A61DF2A5A800EEB6DF /* SignUpViewController.swift */,
-				2C4229131DF1E1FC00B1E2FC /* Main.storyboard */,
-				2C4229161DF1E1FC00B1E2FC /* Assets.xcassets */,
-				2C4229181DF1E1FC00B1E2FC /* LaunchScreen.storyboard */,
-				2C42291B1DF1E1FC00B1E2FC /* Info.plist */,
-				2C08D9AA1DF2B20700EEB6DF /* GoogleService-Info.plist */,
-				2C97FCAD1DF9AB2B00D6EEEE /* FirechatManager.swift */,
-				2C97FCAF1DF9DD7600D6EEEE /* FirechatContact.swift */,
-				2C97FCB11DF9DF6200D6EEEE /* FirechatMappingModel.swift */,
+				2C8499641DFDAA7C009916F8 /* View */,
 			);
 			path = Firechat;
 			sourceTree = "<group>";
@@ -113,6 +104,55 @@
 				2C07B9511DF35AD3006E753D /* MessageFromMeCell.swift */,
 			);
 			name = CustomCells;
+			sourceTree = "<group>";
+		};
+		2C8499611DFDA9A0009916F8 /* ModelClass */ = {
+			isa = PBXGroup;
+			children = (
+				2C97FCAF1DF9DD7600D6EEEE /* FirechatContact.swift */,
+			);
+			name = ModelClass;
+			sourceTree = "<group>";
+		};
+		2C8499621DFDAA40009916F8 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2C97FCB11DF9DF6200D6EEEE /* FirechatMappingModel.swift */,
+				2C97FCAD1DF9AB2B00D6EEEE /* FirechatManager.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		2C8499631DFDAA5D009916F8 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				2C42290F1DF1E1FB00B1E2FC /* AppDelegate.swift */,
+				2C42291B1DF1E1FC00B1E2FC /* Info.plist */,
+				2C08D9AA1DF2B20700EEB6DF /* GoogleService-Info.plist */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		2C8499641DFDAA7C009916F8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C08D9AE1DF2CB5C00EEB6DF /* ActiveConversationsViewController.swift */,
+				2C07B94D1DF359E4006E753D /* ConversationViewController.swift */,
+				2C07B9481DF30812006E753D /* ShowAllProfilesViewController.swift */,
+				2C4229111DF1E1FB00B1E2FC /* SignInViewController.swift */,
+				2C08D9A61DF2A5A800EEB6DF /* SignUpViewController.swift */,
+				2C4229131DF1E1FC00B1E2FC /* Main.storyboard */,
+				2C4229181DF1E1FC00B1E2FC /* LaunchScreen.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		2C8499651DFDAADB009916F8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2C4229161DF1E1FC00B1E2FC /* Assets.xcassets */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		823D3D2D90E9517B48804564 /* Pods */ = {

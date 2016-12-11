@@ -83,8 +83,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.profileImage.image = chosenImage
         dismiss(animated:true, completion: nil)
     }
-
-    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)

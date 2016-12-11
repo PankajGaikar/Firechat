@@ -9,21 +9,16 @@
 import UIKit
 import FirebaseDatabase
 
-
-
 class ShowAllProfilesViewController: UITableViewController
 {
-    var usersInfo: NSDictionary = [:];
+    var usersInfo: NSArray = NSArray();
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        FIRDatabase.database().reference().keepSynced(true)
         
-        FIRDatabase.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.usersInfo = (snapshot.value as? NSDictionary)!
+        FirechatManager.sharedManager.fetchAllContacts { (array) in
+            self.usersInfo = array
             self.tableView.reloadData()
-        }) { (error) in
-            print(error.localizedDescription)
         }
     }
     
@@ -32,30 +27,27 @@ class ShowAllProfilesViewController: UITableViewController
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.usersInfo.allKeys.count
+        return self.usersInfo.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ContactDetailCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ContactDetailCell
         
-        let indexKey: NSArray = self.usersInfo.allKeys as NSArray;
-        let dictionary: NSDictionary = self.usersInfo.object(forKey: indexKey.object(at: indexPath.row)) as! NSDictionary
+        let contact = self.usersInfo.object(at: indexPath.row) as! FirechatContact
         
-        cell.contactName.text = dictionary.object(forKey: "username") as! String?
-        cell.statusLabel?.text = dictionary.object(forKey: "email") as! String?
-        cell.profileImage?.imageFromServerURL(urlString: dictionary.object(forKey: "userPhoto") as! String)
+        cell.contactName.text = contact.username
+        cell.statusLabel?.text = contact.emailID
+        cell.profileImage?.imageFromServerURL(urlString: contact.userPhotoURI)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let indexKey: NSArray = self.usersInfo.allKeys as NSArray;
-        self.performSegue(withIdentifier: "StartNewConversation", sender: self.usersInfo.object(forKey: indexKey.object(at: indexPath.row)))
-        
+        self.performSegue(withIdentifier: "StartNewConversation", sender: self.usersInfo.object(at: indexPath.row))
         self.navigationController?.viewControllers.remove(at: (self.navigationController?.viewControllers.count)! - 2)
     }
     
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! ConversationsViewController
-        destinationVC.otherUser = sender as! NSDictionary
+        destinationVC.otherUser = sender as! FirechatContact
     }
 }

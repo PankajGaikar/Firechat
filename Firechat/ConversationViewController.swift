@@ -12,35 +12,25 @@ import FirebaseAuth
 
 class ConversationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
-    var otherUser: NSDictionary = [:];
-    var currentUser: NSDictionary = [:];
+    var otherUser: FirechatContact = FirechatContact();
+    var currentUser: FirechatContact = FirechatContact();
     var conversationNode = FIRDatabase.database().reference()
     var convoList = NSMutableArray.init()
 
+    @IBOutlet weak var otherUserButton: UIButton!
+    @IBOutlet weak var rightNavbarImage: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTxt: UITextField!
     
-    
-    
-    //Add one more child with key of other user
-    // Check if node exist for email ID in messages
-    // If not, create new node under conversations
-    // Add it's key under messages/email id for both users
-
-    
-
     override func viewDidLoad() {
+        self.title = self.otherUser.username
+        self.otherUserButton.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
+        self.currentUser = FirechatManager.sharedManager.currentUser
         
         self.tableView.rowHeight = UITableViewAutomaticDimension;
-        self.tableView.estimatedRowHeight = 50.0; // set to whatever your "average" cell height is
+        self.tableView.estimatedRowHeight = 50.0;
         
-        FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.currentUser = (snapshot.value as? NSDictionary)!
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-        
-        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages").child(self.otherUser.object(forKey:"key") as! String)
+        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages").child(self.otherUser.userKey)
         
         child.observeSingleEvent(of: .value, with: { (snapshot) in
             if(snapshot.hasChildren())
@@ -48,8 +38,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
                 print("Item exists\(snapshot.value)")
                 
                 let response = snapshot.value as! NSDictionary
-                
-                
+
                 //Add conversation/key path to conversation
                 self.conversationNode = FIRDatabase.database().reference().child("Conversations").child(response.object(forKey: "ConvoKey") as! String)
                 self.fetch()
@@ -61,7 +50,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
                 child.setValue(["ConvoKey": self.conversationNode.key])
                 //Add node to user profile
                 
-                FIRDatabase.database().reference().child("users").child(self.otherUser.object(forKey:"key") as! String).child("Messages").updateChildValues(["ConvoKey": self.conversationNode.key])
+                FIRDatabase.database().reference().child("users").child(self.otherUser.userKey).child("Messages").updateChildValues(["ConvoKey": self.conversationNode.key])
                 self.fetch()
             }
         }) { (error) in
@@ -74,12 +63,8 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     {
         self.conversationNode.observe(.childAdded, with: { snapshot in
             
-            if snapshot.value is NSNull {
-
-            } else {
-                
+            if snapshot.hasChildren() {
                 let x = snapshot.value as! NSDictionary
-                
                 self.convoList.insert(x, at: self.convoList.count)
                 self.tableView.reloadData()
             }
@@ -101,16 +86,18 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         let messageBundle = self.convoList.object(at: indexPath.row) as! NSDictionary
         
         let sender = messageBundle.object(forKey: "sender") as! String
-        if sender == (self.currentUser.object(forKey: "key") as! String)
+        if sender == (self.currentUser.userKey)
         {
             let cell: MessageFromMeCell = tableView.dequeueReusableCell(withIdentifier: "Me", for: indexPath) as! MessageFromMeCell
             cell.message.text = messageBundle.object(forKey: "Message") as? String
+            cell.profileImage.imageFromServerURL(urlString: self.currentUser.userPhotoURI)
             return cell
         }
         else
         {
             let cell: MessageFromYouCell = tableView.dequeueReusableCell(withIdentifier: "You", for: indexPath) as! MessageFromYouCell
             cell.message.text = messageBundle.object(forKey: "Message") as? String
+            cell.profileImage.imageFromServerURL(urlString: self.otherUser.userPhotoURI)
             return cell
         }
     }
@@ -123,7 +110,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
             let convo = self.conversationNode.childByAutoId()
             print(FIRAuth.auth()?.currentUser?.displayName)
             
-            let sender = self.currentUser.object(forKey: "key") as! String
+            let sender = self.currentUser.userKey
             let message:String = x!
             let timestamp = FIRServerValue.timestamp()
             

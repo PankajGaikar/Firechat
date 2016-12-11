@@ -11,10 +11,10 @@ import UIKit
 
 class FirechatContact : NSObject
 {
-    var emailID: String = ""
-    var username: String = ""
-    var userKey: String = ""
-    var convoKeys: NSArray? = nil
-    var userPhotoURI: String = ""
-    var userPhoto: UIImage? = nil
+    var emailID: String = String()
+    var username: String = String()
+    var userKey: String = String()
+    var convoKeys: NSArray = NSArray()
+    var userPhotoURI: String = String()
+    var userPhoto: UIImage = UIImage()
 }
