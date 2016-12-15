@@ -65,10 +65,29 @@ class ActiveConversationsViewController: UITableViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         FirechatManager.sharedManager.fetchActiveConvoContactKeys { (keys) in
-            for index in 0 ..< keys.count
+            let keysArray = keys.allKeys as NSArray
+            for index in 0 ..< keysArray.count
             {
-                FirechatManager.sharedManager.fetchContactForKey(contactKey: keys.object(at: index) as! (String), CompletionHandler: { (dictionary) in
-                    self.users.add(dictionary)                    
+                FirechatManager.sharedManager.fetchContactForKey(contactKey: keysArray.object(at: index) as! (String), CompletionHandler: { (contact) in
+                    let dict: NSMutableDictionary = NSMutableDictionary()
+                    dict.setValue(contact, forKey: "Contact")
+                    let status = keys.object(forKey: keysArray.object(at: index)) as! NSDictionary
+                    dict.setValue(status.object(forKey: "LastMessage"), forKey: "LastMessage")
+                    var flag = 0;
+                    for index in 0 ..< self.users.count
+                    {
+                        let x = self.users.object(at: index) as! NSDictionary
+                        let oldContact = x.object(forKey: "Contact") as! FirechatContact
+                        if oldContact.userKey == contact.userKey
+                        {
+                            self.users.replaceObject(at: index, with: dict)
+                            flag += 1
+                            break;
+                        }
+                    }
+                    if flag == 0{
+                        self.users.add(dict)
+                    }
                     self.tableView.reloadData()
                 })
             }
@@ -85,15 +104,18 @@ class ActiveConversationsViewController: UITableViewController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ConversationListCell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath) as! ConversationListCell
-        let user = self.users.object(at: indexPath.row) as! FirechatContact
-        
+        let dict = self.users.object(at: indexPath.row) as! NSDictionary
+        let user = dict.object(forKey: "Contact") as! FirechatContact
         cell.profileImage.imageFromServerURL(urlString: user.userPhotoURI)
         cell.contactName.text = user.username
+        cell.message.text = dict.value(forKey: "LastMessage") as? String
         return cell;
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "ResumeConversation", sender: self.users.object(at: indexPath.row) as! FirechatContact)
+        let dict = self.users.object(at: indexPath.row) as! NSDictionary
+        let user = dict.object(forKey: "Contact") as! FirechatContact
+        self.performSegue(withIdentifier: "ResumeConversation", sender: user)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

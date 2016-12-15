@@ -17,7 +17,9 @@ class FirechatManager: NSObject
     var usersReference: FIRDatabaseReference;
     var user: FIRUser;
     var currentUser: FirechatContact = FirechatContact();
-    
+    var activeConvoWithUser: FirechatContact = FirechatContact()
+    var conversationNode : FIRDatabaseReference;
+
     static let sharedManager = FirechatManager()
 
     private override init() {
@@ -27,6 +29,7 @@ class FirechatManager: NSObject
         user = (FIRAuth.auth()?.currentUser)!;
         messagesReference = databaseReference.child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages")
         usersReference = databaseReference.child("users")
+        conversationNode = messagesReference
         super.init()
         fetchContactForKey(contactKey: self.user.uid) { (contact) in
             self.currentUser = contact
@@ -43,13 +46,13 @@ class FirechatManager: NSObject
         }
     }
     
-    func fetchActiveConvoContactKeys(CompletionHandler: @escaping (NSArray) -> ())
+    func fetchActiveConvoContactKeys(CompletionHandler: @escaping (NSDictionary) -> ())
     {
         self.messagesReference.observe(.value, with: { snapshot in
             if(snapshot.hasChildren())
             {
                 let response = snapshot.value as! NSDictionary
-                CompletionHandler(response.allKeys as NSArray)
+                CompletionHandler(response)
             }
         })
     }
@@ -83,8 +86,61 @@ class FirechatManager: NSObject
         }
     }
     
+    func checkIfConversationNodeExist(user: FirechatContact, CompletionHandler: @escaping (Bool) -> () )
+    {
+        self.activeConvoWithUser = user;
+        let node = self.messagesReference;
+        node.child(user.userKey).observeSingleEvent(of: .value, with: { (snapshot) in
+            if(snapshot.hasChildren())
+            {
+                print("Item exists\(snapshot.value)")
+                let response = snapshot.value as! NSDictionary
+                self.conversationNode = FIRDatabase.database().reference().child("Conversations").child(response.object(forKey: "ConvoKey") as! String)
+            }
+            else
+            {
+                self.conversationNode = FIRDatabase.database().reference().child("Conversations").childByAutoId()
+                node.child(user.userKey).setValue(["ConvoKey": self.conversationNode.key])
+                //Add node to user profile
+                FIRDatabase.database().reference().child("users").child(user.userKey).child("Messages").child(self.currentUser.userKey).updateChildValues(["ConvoKey": self.conversationNode.key])
+            }
+            self.startObservingActiveConvo()
+            CompletionHandler(true)
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    func startObservingActiveConvo()
+    {
+        self.conversationNode.observe(.childAdded, with: { snapshot in
+            if snapshot.hasChildren() {
+                let message = snapshot.value as! NSDictionary
+                let notificationName = Notification.Name("activeConvoObserver")
+                NotificationCenter.default.post(name: notificationName, object: message)
+            }
+        }){ (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    func removeActiveConvoObserver()
+    {
+        self.conversationNode.removeAllObservers()
+    }
+    
     func sendNewMessage( message: (String))
     {
+        let convo = self.conversationNode.childByAutoId()
+        print(FIRAuth.auth()?.currentUser?.displayName)
         
+        let sender = self.currentUser.userKey
+        let timestamp = FIRServerValue.timestamp()
+        convo.setValue(["sender": sender,
+                        "Message": message,
+                        "time": timestamp] )
+        self.messagesReference.child(self.activeConvoWithUser.userKey).updateChildValues(["LastMessage": message])
+        FIRDatabase.database().reference().child("users").child(self.activeConvoWithUser.userKey).child("Messages").child(self.currentUser.userKey).updateChildValues(["LastMessage": message])
+
     }
 }

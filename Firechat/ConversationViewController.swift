@@ -17,60 +17,34 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     var conversationNode = FIRDatabase.database().reference()
     var convoList = NSMutableArray.init()
 
-    @IBOutlet weak var otherUserButton: UIButton!
-    @IBOutlet weak var rightNavbarImage: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTxt: UITextField!
     
     override func viewDidLoad() {
         self.title = self.otherUser.username
-        self.otherUserButton.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
         self.currentUser = FirechatManager.sharedManager.currentUser
-        
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 50.0;
-        
-        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages").child(self.otherUser.userKey)
-        
-        child.observeSingleEvent(of: .value, with: { (snapshot) in
-            if(snapshot.hasChildren())
-            {
-                print("Item exists\(snapshot.value)")
-                
-                let response = snapshot.value as! NSDictionary
-
-                //Add conversation/key path to conversation
-                self.conversationNode = FIRDatabase.database().reference().child("Conversations").child(response.object(forKey: "ConvoKey") as! String)
-                self.fetch()
+        FirechatManager.sharedManager.checkIfConversationNodeExist(user: otherUser) { (response) in
+            if response{
+                print("Success")
             }
-            else
-            {
-                self.conversationNode = FIRDatabase.database().reference().child("Conversations").childByAutoId()
-//                self.conversationNode.setValue("ChatHead")
-                child.setValue(["ConvoKey": self.conversationNode.key])
-                //Add node to user profile
-                
-                FIRDatabase.database().reference().child("users").child(self.otherUser.userKey).child("Messages").updateChildValues(["ConvoKey": self.conversationNode.key])
-                self.fetch()
-            }
-        }) { (error) in
-            print(error.localizedDescription)
         }
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(activeConvoObserver), name: NSNotification.Name(rawValue: "activeConvoObserver"), object: nil)
     }
     
-    func fetch()
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "activeConvoObserver"), object: nil);
+        FirechatManager.sharedManager.removeActiveConvoObserver()
+    }
+    
+    func activeConvoObserver( message: NSNotification)
     {
-        self.conversationNode.observe(.childAdded, with: { snapshot in
-            
-            if snapshot.hasChildren() {
-                let x = snapshot.value as! NSDictionary
-                self.convoList.insert(x, at: self.convoList.count)
-                self.tableView.reloadData()
-            }
-        }){ (error) in
-            print(error.localizedDescription)
-        }
+        print(message)
+        let x = message.object as! NSDictionary
+        self.convoList.insert(x, at: self.convoList.count)
+        self.tableView.reloadData()
+        self.tableViewScrollToBottom(animated: true)
     }
     
     @IBAction func sendMessageAction(_ sender: AnyObject) {
@@ -104,23 +78,22 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        let x = textField.text
+        let newMessage = textField.text
         
-        if (x?.characters.count) != nil {
-            let convo = self.conversationNode.childByAutoId()
-            print(FIRAuth.auth()?.currentUser?.displayName)
-            
-            let sender = self.currentUser.userKey
-            let message:String = x!
-            let timestamp = FIRServerValue.timestamp()
-            
-            convo.setValue(["sender": sender,
-                            "Message": message,
-                            "time": timestamp] )
-            
+        if (newMessage?.characters.count) != nil {
+            FirechatManager.sharedManager.sendNewMessage(message: newMessage!)
             textField.text = ""
+            self.tableViewScrollToBottom(animated: true)
         }
         return true
     }
     
+    func tableViewScrollToBottom(animated: Bool) {
+        let numberOfSections = self.tableView.numberOfSections
+        let numberOfRows = self.tableView.numberOfRows(inSection: numberOfSections-1)
+        if numberOfRows > 0 {
+            let indexPath = NSIndexPath.init(row: numberOfRows-1, section: numberOfSections-1)
+            self.tableView.scrollToRow(at: indexPath as IndexPath, at: UITableViewScrollPosition.bottom, animated: animated)
+        }
+    }
 }
