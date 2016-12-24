@@ -21,6 +21,27 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var messageTxt: UITextField!
     
     override func viewDidLoad() {
+        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 35, height: 35))
+        button.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
+        button.addTarget(self, action: #selector(ActiveConversationsViewController.profileButtonAction), for: .touchUpInside)
+
+        let rightBarButton = UIBarButtonItem()
+        rightBarButton.customView = button
+        
+        self.navigationItem.rightBarButtonItem = rightBarButton
+        
+        URLSession.shared.dataTask(with: NSURL(string: self.otherUser.userPhotoURI)! as URL, completionHandler: { (data, response, error) -> Void in
+            
+            if error != nil {
+                print(error)
+                return
+            }
+            DispatchQueue.main.async(execute: { () -> Void in
+                let image = UIImage(data: data!)
+                button.setBackgroundImage(image, for: .normal)
+            })
+        }).resume()
+        
         self.title = self.otherUser.username
         self.currentUser = FirechatManager.sharedManager.currentUser
         self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -56,9 +77,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let messageBundle = self.convoList.object(at: indexPath.row) as! NSDictionary
-        
         let sender = messageBundle.object(forKey: "sender") as! String
         if sender == (self.currentUser.userKey)
         {
@@ -77,14 +96,13 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         let newMessage = textField.text
-        
-        if (newMessage?.characters.count) != nil {
+        if (newMessage?.characters.count)! > 0 {
             FirechatManager.sharedManager.sendNewMessage(message: newMessage!)
             textField.text = ""
             self.tableViewScrollToBottom(animated: true)
         }
+        textField.resignFirstResponder()
         return true
     }
     
@@ -95,5 +113,32 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
             let indexPath = NSIndexPath.init(row: numberOfRows-1, section: numberOfSections-1)
             self.tableView.scrollToRow(at: indexPath as IndexPath, at: UITableViewScrollPosition.bottom, animated: animated)
         }
+    }
+    
+    func keyboardWasShown(notification: NSNotification){
+        self.view.frame.origin.y -= 250
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification){
+        self.view.frame.origin.y += 250
+    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        animateViewMoving(up: true, moveValue: 250)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        animateViewMoving(up: false, moveValue: 250)
+    }
+    
+    func animateViewMoving (up:Bool, moveValue :CGFloat){
+        let movementDuration:TimeInterval = 0.3
+        let movement:CGFloat = ( up ? -moveValue : moveValue)
+        
+        UIView.beginAnimations("animateView", context: nil)
+        UIView.setAnimationBeginsFromCurrentState(true)
+        UIView.setAnimationDuration(movementDuration)
+        
+        self.view.frame = self.view.frame.offsetBy(dx: 0, dy: movement)
+        UIView.commitAnimations()
     }
 }

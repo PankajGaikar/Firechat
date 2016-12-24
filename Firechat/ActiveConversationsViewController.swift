@@ -59,11 +59,33 @@ extension UIImageView {
         }).resume()
     }}
 
+extension UIButton {
+    public func imageFromServerURL(urlString: String) {
+        
+        URLSession.shared.dataTask(with: NSURL(string: urlString)! as URL, completionHandler: { (data, response, error) -> Void in
+            
+            if error != nil {
+                print(error)
+                return
+            }
+            DispatchQueue.main.async(execute: { () -> Void in
+                let image = UIImage(data: data!)
+                self.setBackgroundImage(image, for: .normal)
+            })
+            
+        }).resume()
+    }}
+
 class ActiveConversationsViewController: UITableViewController
 {
+    
+    @IBOutlet weak var currentUserButton: UIButton!
     var users = NSMutableArray.init()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.currentUserButton.imageFromServerURL(urlString: FirechatManager.sharedManager.currentUser.userPhotoURI)
+        self.currentUserButton.frame = CGRect.init(x: 0, y: 0, width: 35, height: 35)
+        
         FirechatManager.sharedManager.fetchActiveConvoContactKeys { (keys) in
             let keysArray = keys.allKeys as NSArray
             for index in 0 ..< keysArray.count
@@ -124,6 +146,11 @@ class ActiveConversationsViewController: UITableViewController
             let destinationVC = segue.destination as! ConversationsViewController
             destinationVC.otherUser = sender as! FirechatContact
         }
+        
+    }
+    
+    func profileButtonAction()
+    {
         
     }
 }
