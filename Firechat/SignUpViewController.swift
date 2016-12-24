@@ -31,40 +31,13 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     @IBAction func signUpAction(_ sender: AnyObject) {
-        FIRAuth.auth()?.createUser(withEmail: emailTxt.text!, password: passwordTxt.text!, completion: { (user, error) in
-            if(( error ) != nil)
+        
+        FirechatManager.sharedManager.signUpWithFirechat(username: self.usernameTxt.text!,email: self.emailTxt.text! ,password: self.passwordTxt.text!, image: self.profileImage.image!) { (result) in
+            if( result)
             {
-                print(error?.localizedDescription)
+                self.performSegue(withIdentifier: "UserCreated", sender: self)
             }
-            if(( user ) != nil)
-            {
-                var data = NSData()
-                data = UIImageJPEGRepresentation(self.profileImage.image!, 0.8)! as NSData
-                let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
-                let metaData = FIRStorageMetadata()
-                metaData.contentType = "image/jpg"
-    
-                let storageRef = FIRStorage.storage().reference()
-                storageRef.child(filePath).put(data as Data, metadata: metaData, completion: { (storageMetadata, error ) in
-                    if(( error ) != nil)
-                    {
-                        print(error?.localizedDescription)
-                    }
-                    else
-                    {
-                        let downloadURL = storageMetadata?.downloadURL()!.absoluteString
-                        //store downloadURL at database
-                        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid)
-                        
-                        child.updateChildValues(["userPhoto": downloadURL! as String])
-                        child.updateChildValues(["username": self.usernameTxt.text! as String])
-                        child.updateChildValues(["email": self.emailTxt.text! as String])
-                        child.updateChildValues(["key": child.key as String])                        
-                        self.performSegue(withIdentifier: "UserCreated", sender: self)
-                    }
-                })
-            }
-        })
+        }
     }
     
     func imageTapped(img: AnyObject)

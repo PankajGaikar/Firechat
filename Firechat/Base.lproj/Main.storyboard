@@ -374,6 +374,9 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XiF-0J-O1j">
                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="profileButtonAction:" destination="caT-uZ-yjc" eventType="touchUpInside" id="MCh-fq-g95"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="gBh-le-1LN">
@@ -383,13 +386,90 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="currentUserButton" destination="XiF-0J-O1j" id="Jb0-cU-Bud"/>
+                        <outlet property="currentUserButton" destination="XiF-0J-O1j" id="o3g-ir-PYD"/>
                         <segue destination="q22-m4-Kiv" kind="show" identifier="ResumeConversation" id="QSs-Ym-dwm"/>
+                        <segue destination="uZU-c4-Xli" kind="show" identifier="ShowProfileViewComtroller" action="showDetailViewController:sender:" id="kQr-JE-ari"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vZY-WK-0ne" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2845.5999999999999" y="138.98050974512745"/>
+        </scene>
+        <!--Firechat Profile View Controller-->
+        <scene sceneID="6Dp-Nt-xJU">
+            <objects>
+                <viewController id="uZU-c4-Xli" customClass="FirechatProfileViewController" customModule="Firechat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rdx-U9-cgc"/>
+                        <viewControllerLayoutGuide type="bottom" id="ae5-JL-p4x"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="69C-u6-X76">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iux-fS-D0O">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="Jay-Hg-ZYp"/>
+                                    <constraint firstAttribute="width" constant="300" id="kAn-Oc-ymt"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="150"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yNH-bD-Dqn">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email id" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkw-oq-lZ2">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEy-T6-2Fj">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oh3-28-57a">
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" red="1" green="0.20971918989999999" blue="0.2072712458" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="logoutOfFirechat:" destination="uZU-c4-Xli" eventType="touchUpInside" id="y0j-43-RNM"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wEy-T6-2Fj" firstAttribute="top" secondItem="jkw-oq-lZ2" secondAttribute="bottom" constant="10" id="2Cc-fr-8uX"/>
+                            <constraint firstItem="yNH-bD-Dqn" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="697-dd-3qk"/>
+                            <constraint firstItem="iux-fS-D0O" firstAttribute="top" secondItem="rdx-U9-cgc" secondAttribute="bottom" constant="80" id="7cN-dE-vr4"/>
+                            <constraint firstItem="iux-fS-D0O" firstAttribute="centerX" secondItem="69C-u6-X76" secondAttribute="centerX" id="CVF-Xr-Qkh"/>
+                            <constraint firstItem="wEy-T6-2Fj" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="Duo-29-99R"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="jkw-oq-lZ2" secondAttribute="trailing" constant="10" id="JJa-Ll-m0X"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wEy-T6-2Fj" secondAttribute="trailing" constant="10" id="LXa-af-i0u"/>
+                            <constraint firstItem="oh3-28-57a" firstAttribute="centerX" secondItem="69C-u6-X76" secondAttribute="centerX" id="Rmb-OD-GtJ"/>
+                            <constraint firstItem="ae5-JL-p4x" firstAttribute="top" secondItem="oh3-28-57a" secondAttribute="bottom" constant="20" id="ZOj-04-SQI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yNH-bD-Dqn" secondAttribute="trailing" constant="10" id="cIy-LY-PCC"/>
+                            <constraint firstItem="jkw-oq-lZ2" firstAttribute="top" secondItem="yNH-bD-Dqn" secondAttribute="bottom" constant="10" id="fca-9C-Ap7"/>
+                            <constraint firstItem="jkw-oq-lZ2" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="itE-hd-m9m"/>
+                            <constraint firstItem="yNH-bD-Dqn" firstAttribute="top" secondItem="iux-fS-D0O" secondAttribute="bottom" constant="8" id="obV-yq-6oV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="emailID" destination="jkw-oq-lZ2" id="WBe-JX-x7J"/>
+                        <outlet property="profilePhoto" destination="iux-fS-D0O" id="zeo-0y-je5"/>
+                        <outlet property="status" destination="wEy-T6-2Fj" id="ZHV-un-HWp"/>
+                        <outlet property="username" destination="yNH-bD-Dqn" id="1pb-JF-BaN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LRA-9m-JmG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3962" y="-516"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="o85-Hc-vkK">
@@ -669,7 +749,7 @@
         <image name="user_placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9xW-NY-gzF"/>
         <segue reference="QSs-Ym-dwm"/>
+        <segue reference="SXj-tz-1h5"/>
     </inferredMetricsTieBreakers>
 </document>

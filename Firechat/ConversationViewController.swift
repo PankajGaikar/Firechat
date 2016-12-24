@@ -21,12 +21,11 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var messageTxt: UITextField!
     
     override func viewDidLoad() {
-        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 35, height: 35))
-        button.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
-        button.addTarget(self, action: #selector(ActiveConversationsViewController.profileButtonAction), for: .touchUpInside)
-
+        let otherUserButton = UIButton(frame: CGRect(x: 100, y: 100, width: 35, height: 35))
+        otherUserButton.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
+        otherUserButton.cornerRadius = 17.5
         let rightBarButton = UIBarButtonItem()
-        rightBarButton.customView = button
+        rightBarButton.customView = otherUserButton
         
         self.navigationItem.rightBarButtonItem = rightBarButton
         
@@ -38,7 +37,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
             }
             DispatchQueue.main.async(execute: { () -> Void in
                 let image = UIImage(data: data!)
-                button.setBackgroundImage(image, for: .normal)
+                otherUserButton.setBackgroundImage(image, for: .normal)
             })
         }).resume()
         
@@ -52,6 +51,8 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(activeConvoObserver), name: NSNotification.Name(rawValue: "activeConvoObserver"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -116,18 +117,14 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func keyboardWasShown(notification: NSNotification){
-        self.view.frame.origin.y -= 250
+        let frame = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        animateViewMoving(up: true, moveValue: frame.height)
+
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
-        self.view.frame.origin.y += 250
-    }
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        animateViewMoving(up: true, moveValue: 250)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        animateViewMoving(up: false, moveValue: 250)
+        let frame = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        animateViewMoving(up: false, moveValue: frame.height)
     }
     
     func animateViewMoving (up:Bool, moveValue :CGFloat){

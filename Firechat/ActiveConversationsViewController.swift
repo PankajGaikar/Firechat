@@ -83,8 +83,17 @@ class ActiveConversationsViewController: UITableViewController
     var users = NSMutableArray.init()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.currentUserButton.imageFromServerURL(urlString: FirechatManager.sharedManager.currentUser.userPhotoURI)
         self.currentUserButton.frame = CGRect.init(x: 0, y: 0, width: 35, height: 35)
+        self.currentUserButton.cornerRadius = 17.5
+        let user = FirechatManager.sharedManager.user
+        
+        if user.photoURL != nil {
+            self.currentUserButton.imageFromServerURL(urlString: (user.photoURL?.absoluteString)!)
+        }
+        else
+        {
+            self.currentUserButton.setBackgroundImage(#imageLiteral(resourceName: "user_placeholder"), for: .normal)
+        }
         
         FirechatManager.sharedManager.fetchActiveConvoContactKeys { (keys) in
             let keysArray = keys.allKeys as NSArray
@@ -146,9 +155,17 @@ class ActiveConversationsViewController: UITableViewController
             let destinationVC = segue.destination as! ConversationsViewController
             destinationVC.otherUser = sender as! FirechatContact
         }
-        
+        else if segue.identifier == "ShowProfileViewComtroller"
+        {
+            let destinationVC = segue.destination as! FirechatProfileViewController
+            destinationVC.contact = sender as! FirechatContact
+        }
     }
     
+    @IBAction func profileButtonAction(_ sender: AnyObject) {
+        
+        self.performSegue(withIdentifier: "ShowProfileViewComtroller", sender: FirechatManager.sharedManager.currentUser)
+    }
     func profileButtonAction()
     {
         

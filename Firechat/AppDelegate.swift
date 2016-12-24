@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -58,8 +59,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        // Saves changes in the application's managed object context before the application terminates.
+        self.saveContext()
     }
+    
+    // MARK: - Core Data stack
+    
+    @available(iOS 10.0, *)
+    lazy var persistentContainer: NSPersistentContainer = {
+        /*
+         The persistent container for the application. This implementation
+         creates and returns a container, having loaded the store for the
+         application to it. This property is optional since there are legitimate
+         error conditions that could cause the creation of the store to fail.
+         */
+        let container = NSPersistentContainer(name: "Firechat")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                
+                /*
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+    
+    // MARK: - Core Data Saving support
+    
+    func saveContext () {
+        var context: NSManagedObjectContext?
+        
+        if #available(iOS 10.0, *) {
+            context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        } else {
+            // iOS 9.0 and below - however you were previously handling it
+            guard let modelURL = Bundle.main.url(forResource: "Model", withExtension:"momd") else {
+                fatalError("Error loading model from bundle")
+            }
+            guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
+                fatalError("Error initializing mom from: \(modelURL)")
+            }
+            let psc = NSPersistentStoreCoordinator(managedObjectModel: mom)
+            context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+            let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let docURL = urls[urls.endIndex-1]
+            let storeURL = docURL.appendingPathComponent("Model.sqlite")
+            do {
+                try psc.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: nil)
+            } catch {
+                fatalError("Error migrating store: \(error)")
+            }
+            
+        }
 
-
+    }
+    
 }
-

@@ -16,7 +16,7 @@ class FirechatMappingModel: NSObject {
         contact.username = user.value(forKey: "username") as! String
         contact.userKey = user.value(forKey: "key") as! String
         let convoKeys: NSDictionary = (user.value(forKey: "Messages") != nil) ? user.value(forKey: "Messages") as! NSDictionary : NSDictionary.init()
-        contact.convoKeys = convoKeys.allValues as! NSArray
+        contact.convoKeys = convoKeys.allValues as NSArray
         contact.userPhotoURI = user.value(forKey: "userPhoto") as! String
         return contact
     }

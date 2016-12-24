@@ -9,6 +9,9 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseAuth
+import UIKit
+import CoreData
+import FirebaseStorage
 
 class FirechatManager: NSObject
 {
@@ -23,7 +26,7 @@ class FirechatManager: NSObject
     static let sharedManager = FirechatManager()
 
     private override init() {
-        FIRDatabase.database().persistenceEnabled = true
+//        FIRDatabase.database().persistenceEnabled = true
         databaseReference = FIRDatabase.database().reference()
         databaseReference.keepSynced(true)
         user = (FIRAuth.auth()?.currentUser)!;
@@ -31,19 +34,78 @@ class FirechatManager: NSObject
         usersReference = databaseReference.child("users")
         conversationNode = messagesReference
         super.init()
+        if ( (UserDefaults.standard.value(forKey: "emailID") ) != nil)
+        {
+            
+        }
+        
         fetchContactForKey(contactKey: self.user.uid) { (contact) in
             self.currentUser = contact
         }
     }
     
-    //@TODO: Remove duplicate method
-    func fetchUser(userKey: (String), CompletionHandler: @escaping (FirechatContact) -> ())
+    func signInToFirechat(username: String, password: String, CompletionHandler: @escaping (Bool) -> () )
     {
-        self.usersReference.child(userKey).observeSingleEvent(of: .value, with: { (snapshot) in
-            CompletionHandler(FirechatMappingModel.init().mapUserObject(user: snapshot.value as! NSDictionary))
-        }) { (error) in
-            print(error.localizedDescription)
-        }
+        FIRAuth.auth()?.signIn(withEmail: username, password: password, completion: { (user, error) in
+            if(( error ) != nil)
+            {
+                print(error?.localizedDescription)
+            }
+            
+            if(( user ) != nil)
+            {
+                print("Sign in success")
+                CompletionHandler(true)
+            }
+        })
+    }
+    
+    func signUpWithFirechat(username: String, email: String, password: String, image: UIImage, CompletionHandler: @escaping (Bool) -> () )
+    {
+        FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
+            if(( error ) != nil)
+            {
+                print(error?.localizedDescription)
+            }
+            if(( user ) != nil)
+            {
+                var data = NSData()
+                data = UIImageJPEGRepresentation(image, 0.8)! as NSData
+                let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+                let metaData = FIRStorageMetadata()
+                metaData.contentType = "image/jpg"
+                
+                let storageRef = FIRStorage.storage().reference()
+                storageRef.child(filePath).put(data as Data, metadata: metaData, completion: { (storageMetadata, error ) in
+                    if(( error ) != nil)
+                    {
+                        print(error?.localizedDescription)
+                    }
+                    else
+                    {
+                        let downloadURL = storageMetadata?.downloadURL()!.absoluteString
+                        
+                        
+                        let changeRequest = FIRAuth.auth()?.currentUser?.profileChangeRequest()
+                        changeRequest?.displayName = username
+                        changeRequest?.photoURL = storageMetadata?.downloadURL()
+                        changeRequest?.commitChanges() { (error) in
+                            if( error == nil )
+                            {
+                                print("Commit success")
+                            }
+                        }
+                        //store downloadURL at database
+                        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid)
+                        child.updateChildValues(["userPhoto": downloadURL! as String])
+                        child.updateChildValues(["username": username])
+                        child.updateChildValues(["email": email])
+                        child.updateChildValues(["key": child.key as String])
+                        CompletionHandler(true)
+                    }
+                })
+            }
+        })
     }
     
     func fetchActiveConvoContactKeys(CompletionHandler: @escaping (NSDictionary) -> ())

@@ -18,18 +18,11 @@ class SignInViewController: UIViewController {
     }
 
     @IBAction func signInAction(_ sender: AnyObject) {
-        FIRAuth.auth()?.signIn(withEmail: emailIdTxt.text!, password: passwordTxt.text!, completion: { (user, error) in
-            if(( error ) != nil)
-            {
-                print(error?.localizedDescription)
-            }
-            
-            if(( user ) != nil)
-            {
-                print("SIgn in success")
+        FirechatManager.sharedManager.signInToFirechat(username: emailIdTxt.text!, password: passwordTxt.text!) { (result) in
+            if result {
                 self.performSegue(withIdentifier: "UserSignedIn", sender: self)
             }
-        })
+        }
     }
 }
 
