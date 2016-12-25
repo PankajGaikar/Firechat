@@ -11,4 +11,5 @@ import UIKit
 class MessageFromMeCell: UITableViewCell {
     @IBOutlet weak var message: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var timestamp: UILabel!
 }

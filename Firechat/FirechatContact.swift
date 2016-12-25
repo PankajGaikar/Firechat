@@ -14,6 +14,7 @@ class FirechatContact : NSObject
     var emailID: String = String()
     var username: String = String()
     var userKey: String = String()
+    var status: String = String()
     var convoKeys: NSArray = NSArray()
     var userPhotoURI: String = String()
     var userPhoto: UIImage = UIImage()

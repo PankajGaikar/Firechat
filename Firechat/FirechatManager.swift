@@ -21,11 +21,10 @@ class FirechatManager: NSObject
     var currentUser: FirechatContact = FirechatContact()
     var activeConvoWithUser: FirechatContact = FirechatContact()
     var conversationNode : FIRDatabaseReference = FIRDatabaseReference()
-
     static let sharedManager = FirechatManager()
 
     private override init() {
-//        FIRDatabase.database().persistenceEnabled = true
+        FIRDatabase.database().persistenceEnabled = true
         databaseReference = FIRDatabase.database().reference()
         databaseReference.keepSynced(true)
         super.init()
@@ -102,6 +101,8 @@ class FirechatManager: NSObject
                         child.updateChildValues(["username": username])
                         child.updateChildValues(["email": email])
                         child.updateChildValues(["key": child.key as String])
+                        child.updateChildValues(["status": "Hey there! I'm using Firechat"])
+                        
                         self.initializeNodes()
                         CompletionHandler(true)
                     }
@@ -210,6 +211,12 @@ class FirechatManager: NSObject
                         "time": timestamp] )
         self.messagesReference.child(self.activeConvoWithUser.userKey).updateChildValues(["LastMessage": message])
         FIRDatabase.database().reference().child("users").child(self.activeConvoWithUser.userKey).child("Messages").child(self.currentUser.userKey).updateChildValues(["LastMessage": message])
+    }
+    
+    func updateUserStatus(status: String) {
+        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid)
+        child.updateChildValues(["status": status])
 
     }
+    
 }

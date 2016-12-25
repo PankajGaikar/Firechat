@@ -15,7 +15,10 @@ class ShowAllProfilesViewController: UITableViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        self.title = "All Contacts"
         FirechatManager.sharedManager.fetchAllContacts { (array) in
             self.usersInfo = array
             self.tableView.reloadData()
@@ -36,7 +39,7 @@ class ShowAllProfilesViewController: UITableViewController
         let contact = self.usersInfo.object(at: indexPath.row) as! FirechatContact
         
         cell.contactName.text = contact.username
-        cell.statusLabel?.text = contact.emailID
+        cell.statusLabel?.text = contact.status
         cell.profileImage?.imageFromServerURL(urlString: contact.userPhotoURI)
         return cell
     }

@@ -21,6 +21,9 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var messageTxt: UITextField!
     
     override func viewDidLoad() {
+        navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         let otherUserButton = UIButton(frame: CGRect(x: 100, y: 100, width: 35, height: 35))
         otherUserButton.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
         otherUserButton.cornerRadius = 17.5
@@ -87,6 +90,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
             let cell: MessageFromMeCell = tableView.dequeueReusableCell(withIdentifier: "Me", for: indexPath) as! MessageFromMeCell
             cell.message.text = messageBundle.object(forKey: "Message") as? String
             cell.profileImage.imageFromServerURL(urlString: self.currentUser.userPhotoURI)
+            cell.timestamp.text = self.formatDate(date: messageBundle.value(forKey: "time") as! Double)
             return cell
         }
         else
@@ -94,8 +98,19 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
             let cell: MessageFromYouCell = tableView.dequeueReusableCell(withIdentifier: "You", for: indexPath) as! MessageFromYouCell
             cell.message.text = messageBundle.object(forKey: "Message") as? String
             cell.profileImage.imageFromServerURL(urlString: self.otherUser.userPhotoURI)
+            let x:Double = messageBundle.value(forKey: "time") as! Double
+            print(NSDate(timeIntervalSince1970: x/1000))
+            cell.timestamp.text = self.formatDate(date: messageBundle.value(forKey: "time") as! Double)
             return cell
         }
+    }
+    
+    func formatDate(date: Double) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = NSTimeZone.local
+        dateFormatter.dateFormat = "MMMM dd, hh:mm a"
+        let time = dateFormatter.string(from: NSDate(timeIntervalSince1970: date/1000) as Date)
+        return time as String
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

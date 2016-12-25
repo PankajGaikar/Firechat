@@ -18,6 +18,10 @@ class ActiveConversationsViewController: UITableViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
+        navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        self.title = "Firechat"
         self.currentUserButton.frame = CGRect.init(x: 0, y: 0, width: 35, height: 35)
         self.currentUserButton.cornerRadius = 17.5
         

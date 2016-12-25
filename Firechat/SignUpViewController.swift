@@ -20,6 +20,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        self.title = "Sign Up"
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(imageTapped(img:)))
         profileImage.isUserInteractionEnabled = true
         profileImage.addGestureRecognizer(tapGestureRecognizer)
