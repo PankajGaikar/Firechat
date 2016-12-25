@@ -35,7 +35,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         FirechatManager.sharedManager.signUpWithFirechat(username: self.usernameTxt.text!,email: self.emailTxt.text! ,password: self.passwordTxt.text!, image: self.profileImage.image!) { (result) in
             if( result)
             {
-                self.performSegue(withIdentifier: "UserCreated", sender: self)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let viewController = storyboard.instantiateViewController(withIdentifier: "ActiveConversationsViewController") as! ActiveConversationsViewController
+                self.navigationController?.pushViewController(viewController, animated: true)
             }
         }
     }

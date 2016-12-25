@@ -42,7 +42,10 @@ class ShowAllProfilesViewController: UITableViewController
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "StartNewConversation", sender: self.usersInfo.object(at: indexPath.row))
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ConversationsViewController") as! ConversationsViewController
+        viewController.otherUser = self.usersInfo.object(at: indexPath.row) as! FirechatContact
+        self.navigationController?.pushViewController(viewController, animated: true)
         self.navigationController?.viewControllers.remove(at: (self.navigationController?.viewControllers.count)! - 2)
     }
     

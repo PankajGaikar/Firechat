@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="EDB-ao-Y1A">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -7,6 +7,36 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Firechat Loading View Controller-->
+        <scene sceneID="amZ-AD-l0v">
+            <objects>
+                <viewController id="Lfa-HD-Dgp" customClass="FirechatLoadingViewController" customModule="Firechat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ayo-GJ-9vX"/>
+                        <viewControllerLayoutGuide type="bottom" id="VjT-ga-nUY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sUD-X2-nCn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pZy-hj-ggN"/>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pZy-hj-ggN" firstAttribute="centerX" secondItem="sUD-X2-nCn" secondAttribute="centerX" id="DnI-Hr-WYN"/>
+                            <constraint firstItem="pZy-hj-ggN" firstAttribute="centerY" secondItem="sUD-X2-nCn" secondAttribute="centerY" id="tdC-vG-OFW"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="gjh-Wv-UqU"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="showDetail" identifier="SignInRoot" id="ix3-WU-eTU"/>
+                        <segue destination="caT-uZ-yjc" kind="show" identifier="ConvoRoot" id="6rt-K1-QZp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TMg-dq-lFW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1284" y="-149"/>
+        </scene>
         <!--Sign In View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -133,12 +163,12 @@
                     <connections>
                         <outlet property="emailIdTxt" destination="rC4-t5-sV5" id="EZ0-YI-d5T"/>
                         <outlet property="passwordTxt" destination="XbH-N8-JFi" id="ItS-ae-bxm"/>
-                        <segue destination="5fy-dC-LGv" kind="showDetail" identifier="UserSignedIn" id="9xW-NY-gzF"/>
+                        <segue destination="caT-uZ-yjc" kind="showDetail" identifier="UserSignedIn" id="p4b-iT-hvI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="839" y="139"/>
+            <point key="canvasLocation" x="1284" y="702"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="hQ0-iD-BQr">
@@ -293,12 +323,12 @@
                         <outlet property="passwordTxt" destination="5Bk-xP-E2V" id="rUa-AT-g9s"/>
                         <outlet property="profileImage" destination="YhM-2W-730" id="gW4-Ws-BEZ"/>
                         <outlet property="usernameTxt" destination="Dmp-3e-mt6" id="GvF-Jb-IXO"/>
-                        <segue destination="5fy-dC-LGv" kind="showDetail" identifier="UserCreated" id="SXj-tz-1h5"/>
+                        <segue destination="caT-uZ-yjc" kind="showDetail" identifier="UserCreated" id="4Sx-Y6-d2k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R8w-ca-tQC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="838" y="937"/>
+            <point key="canvasLocation" x="1284" y="1594"/>
         </scene>
         <!--Active Conversations View Controller-->
         <scene sceneID="zrP-SU-A7y">
@@ -393,12 +423,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vZY-WK-0ne" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2845.5999999999999" y="138.98050974512745"/>
+            <point key="canvasLocation" x="2793" y="419"/>
         </scene>
         <!--Firechat Profile View Controller-->
         <scene sceneID="6Dp-Nt-xJU">
             <objects>
-                <viewController id="uZU-c4-Xli" customClass="FirechatProfileViewController" customModule="Firechat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FirechatProfileViewController" id="uZU-c4-Xli" customClass="FirechatProfileViewController" customModule="Firechat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rdx-U9-cgc"/>
                         <viewControllerLayoutGuide type="bottom" id="ae5-JL-p4x"/>
@@ -409,27 +439,39 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iux-fS-D0O">
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="Jay-Hg-ZYp"/>
-                                    <constraint firstAttribute="width" constant="300" id="kAn-Oc-ymt"/>
+                                    <constraint firstAttribute="height" constant="250" id="Jay-Hg-ZYp"/>
+                                    <constraint firstAttribute="width" constant="250" id="kAn-Oc-ymt"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="150"/>
+                                        <real key="value" value="125"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yNH-bD-Dqn">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ZVU-ku-d3S"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email id" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkw-oq-lZ2">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="TlM-IA-G9s"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEy-T6-2Fj">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="kip-Rh-gxB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -443,11 +485,11 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="wEy-T6-2Fj" firstAttribute="top" secondItem="jkw-oq-lZ2" secondAttribute="bottom" constant="10" id="2Cc-fr-8uX"/>
+                            <constraint firstItem="wEy-T6-2Fj" firstAttribute="top" secondItem="jkw-oq-lZ2" secondAttribute="bottom" id="2Cc-fr-8uX"/>
                             <constraint firstItem="yNH-bD-Dqn" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="697-dd-3qk"/>
-                            <constraint firstItem="iux-fS-D0O" firstAttribute="top" secondItem="rdx-U9-cgc" secondAttribute="bottom" constant="80" id="7cN-dE-vr4"/>
+                            <constraint firstItem="iux-fS-D0O" firstAttribute="top" secondItem="rdx-U9-cgc" secondAttribute="bottom" constant="15" id="7cN-dE-vr4"/>
                             <constraint firstItem="iux-fS-D0O" firstAttribute="centerX" secondItem="69C-u6-X76" secondAttribute="centerX" id="CVF-Xr-Qkh"/>
                             <constraint firstItem="wEy-T6-2Fj" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="Duo-29-99R"/>
                             <constraint firstAttribute="trailingMargin" secondItem="jkw-oq-lZ2" secondAttribute="trailing" constant="10" id="JJa-Ll-m0X"/>
@@ -455,13 +497,14 @@
                             <constraint firstItem="oh3-28-57a" firstAttribute="centerX" secondItem="69C-u6-X76" secondAttribute="centerX" id="Rmb-OD-GtJ"/>
                             <constraint firstItem="ae5-JL-p4x" firstAttribute="top" secondItem="oh3-28-57a" secondAttribute="bottom" constant="20" id="ZOj-04-SQI"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yNH-bD-Dqn" secondAttribute="trailing" constant="10" id="cIy-LY-PCC"/>
-                            <constraint firstItem="jkw-oq-lZ2" firstAttribute="top" secondItem="yNH-bD-Dqn" secondAttribute="bottom" constant="10" id="fca-9C-Ap7"/>
+                            <constraint firstItem="jkw-oq-lZ2" firstAttribute="top" secondItem="yNH-bD-Dqn" secondAttribute="bottom" constant="20" id="fca-9C-Ap7"/>
                             <constraint firstItem="jkw-oq-lZ2" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="itE-hd-m9m"/>
-                            <constraint firstItem="yNH-bD-Dqn" firstAttribute="top" secondItem="iux-fS-D0O" secondAttribute="bottom" constant="8" id="obV-yq-6oV"/>
+                            <constraint firstItem="yNH-bD-Dqn" firstAttribute="top" secondItem="iux-fS-D0O" secondAttribute="bottom" constant="30" id="obV-yq-6oV"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="emailID" destination="jkw-oq-lZ2" id="WBe-JX-x7J"/>
+                        <outlet property="logoutButton" destination="oh3-28-57a" id="IHb-cY-Jva"/>
                         <outlet property="profilePhoto" destination="iux-fS-D0O" id="zeo-0y-je5"/>
                         <outlet property="status" destination="wEy-T6-2Fj" id="ZHV-un-HWp"/>
                         <outlet property="username" destination="yNH-bD-Dqn" id="1pb-JF-BaN"/>
@@ -469,7 +512,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LRA-9m-JmG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3962" y="-516"/>
+            <point key="canvasLocation" x="4246" y="29"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="o85-Hc-vkK">
@@ -537,12 +580,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N5a-jF-udc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2845.5999999999999" y="963.86806596701661"/>
+            <point key="canvasLocation" x="2793" y="1218"/>
         </scene>
         <!--Conversations View Controller-->
         <scene sceneID="juC-kF-Ff4">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="q22-m4-Kiv" customClass="ConversationsViewController" customModule="Firechat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ConversationsViewController" automaticallyAdjustsScrollViewInsets="NO" id="q22-m4-Kiv" customClass="ConversationsViewController" customModule="Firechat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oEn-gz-8Qh"/>
                         <viewControllerLayoutGuide type="bottom" id="TC1-mK-TTw"/>
@@ -592,7 +635,6 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="bfB-4c-ZB0" firstAttribute="top" secondItem="qhq-c4-mCH" secondAttribute="topMargin" id="DkT-jH-1Kd"/>
-                                                        <constraint firstItem="bfB-4c-ZB0" firstAttribute="centerY" secondItem="qhq-c4-mCH" secondAttribute="centerY" id="cZh-NP-zPP"/>
                                                         <constraint firstItem="6eQ-Bn-Ywr" firstAttribute="leading" secondItem="qhq-c4-mCH" secondAttribute="leading" id="p0c-64-rKj"/>
                                                         <constraint firstItem="bfB-4c-ZB0" firstAttribute="leading" secondItem="6eQ-Bn-Ywr" secondAttribute="trailing" constant="10" id="tbG-lI-BfD"/>
                                                         <constraint firstItem="6eQ-Bn-Ywr" firstAttribute="top" secondItem="bfB-4c-ZB0" secondAttribute="top" id="yRz-PG-JhC"/>
@@ -644,7 +686,6 @@
                                                         <constraint firstItem="VTC-op-O7u" firstAttribute="top" secondItem="MBH-d2-ZTK" secondAttribute="topMargin" id="NbV-h2-ply"/>
                                                         <constraint firstItem="VTC-op-O7u" firstAttribute="leading" secondItem="MBH-d2-ZTK" secondAttribute="leadingMargin" constant="50" id="gyq-ns-Slh"/>
                                                         <constraint firstAttribute="trailing" secondItem="rnY-K9-nTe" secondAttribute="trailing" id="h2d-bC-tUb"/>
-                                                        <constraint firstItem="VTC-op-O7u" firstAttribute="centerY" secondItem="MBH-d2-ZTK" secondAttribute="centerY" id="rLn-gR-3yg"/>
                                                         <constraint firstItem="rnY-K9-nTe" firstAttribute="leading" secondItem="VTC-op-O7u" secondAttribute="trailing" constant="10" id="v2I-vg-7nw"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
@@ -724,25 +765,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xy5-wl-dQ1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3997.5999999999999" y="538.38080959520244"/>
+            <point key="canvasLocation" x="4246" y="815"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="RNM-ED-5Z4">
+        <scene sceneID="Ug9-pd-r9i">
             <objects>
-                <navigationController storyboardIdentifier="Nav" automaticallyAdjustsScrollViewInsets="NO" id="5fy-dC-LGv" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="EDB-ao-Y1A" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Uh0-4G-6NY">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RXB-kA-dna">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="caT-uZ-yjc" kind="relationship" relationship="rootViewController" id="a8S-0L-ueK"/>
+                        <segue destination="Lfa-HD-Dgp" kind="relationship" relationship="rootViewController" id="ITS-sI-Iss"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x3h-ig-PAi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gAk-bV-saD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1943" y="491"/>
+            <point key="canvasLocation" x="327" y="-150"/>
         </scene>
     </scenes>
     <resources>
@@ -750,6 +791,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="QSs-Ym-dwm"/>
-        <segue reference="SXj-tz-1h5"/>
+        <segue reference="6rt-K1-QZp"/>
     </inferredMetricsTieBreakers>
 </document>

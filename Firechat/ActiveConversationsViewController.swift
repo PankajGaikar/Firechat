@@ -10,72 +10,6 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-
-extension UIView {
-    
-    @IBInspectable var cornerRadius: CGFloat {
-        get {
-            return layer.cornerRadius
-        }
-        set {
-            layer.cornerRadius = newValue
-            layer.masksToBounds = newValue > 0
-        }
-    }
-    
-    @IBInspectable var borderWidth: CGFloat {
-        get {
-            return layer.borderWidth
-        }
-        set {
-            layer.borderWidth = newValue
-        }
-    }
-    
-    @IBInspectable var borderColor: UIColor? {
-        get {
-            return UIColor(cgColor: layer.borderColor!)
-        }
-        set {
-            layer.borderColor = newValue?.cgColor
-        }
-    }
-}
-
-extension UIImageView {
-    public func imageFromServerURL(urlString: String) {
-        
-        URLSession.shared.dataTask(with: NSURL(string: urlString)! as URL, completionHandler: { (data, response, error) -> Void in
-            
-            if error != nil {
-                print(error)
-                return
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                let image = UIImage(data: data!)
-                self.image = image
-            })
-            
-        }).resume()
-    }}
-
-extension UIButton {
-    public func imageFromServerURL(urlString: String) {
-        
-        URLSession.shared.dataTask(with: NSURL(string: urlString)! as URL, completionHandler: { (data, response, error) -> Void in
-            
-            if error != nil {
-                print(error)
-                return
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                let image = UIImage(data: data!)
-                self.setBackgroundImage(image, for: .normal)
-            })
-            
-        }).resume()
-    }}
-
 class ActiveConversationsViewController: UITableViewController
 {
     
@@ -83,12 +17,12 @@ class ActiveConversationsViewController: UITableViewController
     var users = NSMutableArray.init()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.hidesBackButton = true
         self.currentUserButton.frame = CGRect.init(x: 0, y: 0, width: 35, height: 35)
         self.currentUserButton.cornerRadius = 17.5
-        let user = FirechatManager.sharedManager.user
         
-        if user.photoURL != nil {
-            self.currentUserButton.imageFromServerURL(urlString: (user.photoURL?.absoluteString)!)
+        if FIRAuth.auth()?.currentUser?.photoURL != nil {
+            self.currentUserButton.imageFromServerURL(urlString: (FIRAuth.auth()?.currentUser?.photoURL?.absoluteString)!)
         }
         else
         {
@@ -146,28 +80,18 @@ class ActiveConversationsViewController: UITableViewController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dict = self.users.object(at: indexPath.row) as! NSDictionary
         let user = dict.object(forKey: "Contact") as! FirechatContact
-        self.performSegue(withIdentifier: "ResumeConversation", sender: user)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ResumeConversation"
-        {
-            let destinationVC = segue.destination as! ConversationsViewController
-            destinationVC.otherUser = sender as! FirechatContact
-        }
-        else if segue.identifier == "ShowProfileViewComtroller"
-        {
-            let destinationVC = segue.destination as! FirechatProfileViewController
-            destinationVC.contact = sender as! FirechatContact
-        }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ConversationsViewController") as! ConversationsViewController
+        viewController.otherUser = user
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     @IBAction func profileButtonAction(_ sender: AnyObject) {
-        
-        self.performSegue(withIdentifier: "ShowProfileViewComtroller", sender: FirechatManager.sharedManager.currentUser)
-    }
-    func profileButtonAction()
-    {
-        
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "FirechatProfileViewController") as! FirechatProfileViewController
+        viewController.contact = FirechatManager.sharedManager.currentUser
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

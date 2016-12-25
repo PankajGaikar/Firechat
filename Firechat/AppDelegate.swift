@@ -19,22 +19,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         FIRApp.configure()
-        self.window = UIWindow(frame: UIScreen.main.bounds)
+//        self.window = UIWindow(frame: UIScreen.main.bounds)
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        var viewController: UIViewController;
-        if( FIRAuth.auth()?.currentUser != nil)
-        {
-            viewController = storyboard.instantiateViewController(withIdentifier: "ActiveConversationsViewController") as! ActiveConversationsViewController
-            let navController = UINavigationController.init(rootViewController: viewController)
-            self.window?.rootViewController = navController
-        }
-        else
-        {
-            viewController = storyboard.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
-            self.window?.rootViewController = viewController
-        }
-        self.window?.makeKeyAndVisible()
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        
+//        var viewController: UIViewController;
+//        if( FIRAuth.auth()?.currentUser != nil)
+//        {
+//            viewController = storyboard.instantiateViewController(withIdentifier: "ActiveConversationsViewController") as! ActiveConversationsViewController
+////            let navController = UINavigationController.init(rootViewController: viewController)
+//            self.window?.rootViewController = viewController
+//        }
+//        else
+//        {
+//            viewController = storyboard.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
+//            self.window?.rootViewController = viewController
+//        }
+//        self.window?.makeKeyAndVisible()
         
         return true
     }

@@ -12,12 +12,13 @@ import UIKit
 class FirechatProfileViewController: UIViewController {
     
     var contact: FirechatContact = FirechatContact()
-    
+    var otherUser: Bool = false
     
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var emailID: UILabel!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var profilePhoto: UIImageView!
+    @IBOutlet weak var logoutButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,8 +26,14 @@ class FirechatProfileViewController: UIViewController {
         self.emailID.text = self.contact.emailID
         self.username.text = self.contact.username
         self.profilePhoto.imageFromServerURL(urlString: self.contact.userPhotoURI)
+        self.logoutButton.isHidden = self.otherUser
     }
     
     @IBAction func logoutOfFirechat(_ sender: AnyObject) {
+        FirechatManager.sharedManager.logout { (result) in
+            if result{
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+        }
     }
 }

@@ -24,6 +24,8 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         let otherUserButton = UIButton(frame: CGRect(x: 100, y: 100, width: 35, height: 35))
         otherUserButton.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
         otherUserButton.cornerRadius = 17.5
+        otherUserButton.addTarget(self, action: #selector(self.showOtherProfile), for: .touchUpInside)
+        
         let rightBarButton = UIBarButtonItem()
         rightBarButton.customView = otherUserButton
         
@@ -137,5 +139,13 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         
         self.view.frame = self.view.frame.offsetBy(dx: 0, dy: movement)
         UIView.commitAnimations()
+    }
+    
+    func showOtherProfile() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "FirechatProfileViewController") as! FirechatProfileViewController
+        viewController.contact = self.otherUser
+        viewController.otherUser = true
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

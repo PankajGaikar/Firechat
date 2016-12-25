@@ -15,13 +15,12 @@ import FirebaseStorage
 
 class FirechatManager: NSObject
 {
-    var databaseReference: FIRDatabaseReference;
-    var messagesReference: FIRDatabaseReference;
-    var usersReference: FIRDatabaseReference;
-    var user: FIRUser;
-    var currentUser: FirechatContact = FirechatContact();
+    var databaseReference: FIRDatabaseReference = FIRDatabaseReference()
+    var messagesReference: FIRDatabaseReference = FIRDatabaseReference()
+    var usersReference: FIRDatabaseReference = FIRDatabaseReference()
+    var currentUser: FirechatContact = FirechatContact()
     var activeConvoWithUser: FirechatContact = FirechatContact()
-    var conversationNode : FIRDatabaseReference;
+    var conversationNode : FIRDatabaseReference = FIRDatabaseReference()
 
     static let sharedManager = FirechatManager()
 
@@ -29,18 +28,19 @@ class FirechatManager: NSObject
 //        FIRDatabase.database().persistenceEnabled = true
         databaseReference = FIRDatabase.database().reference()
         databaseReference.keepSynced(true)
-        user = (FIRAuth.auth()?.currentUser)!;
-        messagesReference = databaseReference.child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages")
-        usersReference = databaseReference.child("users")
-        conversationNode = messagesReference
         super.init()
-        if ( (UserDefaults.standard.value(forKey: "emailID") ) != nil)
+        initializeNodes()
+    }
+    
+    func initializeNodes() {
+        if(( FIRAuth.auth()?.currentUser ) != nil)
         {
-            
-        }
-        
-        fetchContactForKey(contactKey: self.user.uid) { (contact) in
-            self.currentUser = contact
+            messagesReference = databaseReference.child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages")
+            usersReference = databaseReference.child("users")
+            conversationNode = messagesReference
+            fetchContactForKey(contactKey: (FIRAuth.auth()?.currentUser?.uid)!) { (contact) in
+                self.currentUser = contact
+            }
         }
     }
     
@@ -55,6 +55,7 @@ class FirechatManager: NSObject
             if(( user ) != nil)
             {
                 print("Sign in success")
+                self.initializeNodes()
                 CompletionHandler(true)
             }
         })
@@ -101,11 +102,17 @@ class FirechatManager: NSObject
                         child.updateChildValues(["username": username])
                         child.updateChildValues(["email": email])
                         child.updateChildValues(["key": child.key as String])
+                        self.initializeNodes()
                         CompletionHandler(true)
                     }
                 })
             }
         })
+    }
+    
+    func logout(CompletionHandler: @escaping (Bool) -> ()) {
+        try! FIRAuth.auth()?.signOut()
+        CompletionHandler(true)
     }
     
     func fetchActiveConvoContactKeys(CompletionHandler: @escaping (NSDictionary) -> ())
