@@ -9,6 +9,18 @@
 import Foundation
 import UIKit
 import Firebase
+
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
 extension UIView {
     
     @IBInspectable var cornerRadius: CGFloat {

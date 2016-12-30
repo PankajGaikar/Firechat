@@ -20,7 +20,7 @@ class FirechatProfileViewController: UIViewController {
     @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var statusTextField: UITextField!
-    @IBOutlet weak var editStatusButton: UITextField!
+    @IBOutlet weak var editStatusButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
@@ -32,7 +32,7 @@ class FirechatProfileViewController: UIViewController {
         self.username.text = self.contact.username
         self.profilePhoto.imageFromServerURL(urlString: self.contact.userPhotoURI)
         self.logoutButton.isHidden = self.otherUser
-        self.editStatusButton.isHidden = !self.otherUser
+        self.editStatusButton.isHidden = self.otherUser
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
@@ -40,7 +40,10 @@ class FirechatProfileViewController: UIViewController {
     @IBAction func logoutOfFirechat(_ sender: AnyObject) {
         FirechatManager.sharedManager.logout { (result) in
             if result{
-                self.navigationController?.popToRootViewController(animated: true)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let viewController = storyboard.instantiateViewController(withIdentifier: "FirechatLoadingViewController") as! FirechatLoadingViewController
+                self.navigationController?.viewControllers = [viewController]
+            
             }
         }
     }

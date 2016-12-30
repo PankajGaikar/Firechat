@@ -43,29 +43,31 @@ class FirechatManager: NSObject
         }
     }
     
-    func signInToFirechat(username: String, password: String, CompletionHandler: @escaping (Bool) -> () )
+    func signInToFirechat(username: String, password: String, CompletionHandler: @escaping (NSDictionary) -> () )
     {
         FIRAuth.auth()?.signIn(withEmail: username, password: password, completion: { (user, error) in
             if(( error ) != nil)
             {
                 print(error?.localizedDescription)
+                CompletionHandler(["error": error])
             }
             
             if(( user ) != nil)
             {
                 print("Sign in success")
                 self.initializeNodes()
-                CompletionHandler(true)
+                CompletionHandler(["success": true])
             }
         })
     }
     
-    func signUpWithFirechat(username: String, email: String, password: String, image: UIImage, CompletionHandler: @escaping (Bool) -> () )
+    func signUpWithFirechat(username: String, email: String, password: String, image: UIImage, CompletionHandler: @escaping (NSDictionary) -> () )
     {
         FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
             if(( error ) != nil)
             {
                 print(error?.localizedDescription)
+                CompletionHandler(["error": error])
             }
             if(( user ) != nil)
             {
@@ -104,7 +106,7 @@ class FirechatManager: NSObject
                         child.updateChildValues(["status": "Hey there! I'm using Firechat"])
                         
                         self.initializeNodes()
-                        CompletionHandler(true)
+                        CompletionHandler(["success": true])
                     }
                 })
             }

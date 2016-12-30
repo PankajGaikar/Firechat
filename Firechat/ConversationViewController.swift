@@ -50,11 +50,14 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         self.currentUser = FirechatManager.sharedManager.currentUser
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 50.0;
+        self.hideKeyboardWhenTappedAround()
         FirechatManager.sharedManager.checkIfConversationNodeExist(user: otherUser) { (response) in
             if response{
                 print("Success")
             }
         }
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(activeConvoObserver), name: NSNotification.Name(rawValue: "activeConvoObserver"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -75,7 +78,10 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @IBAction func sendMessageAction(_ sender: AnyObject) {
-        
+        if (self.messageTxt.text?.characters.count)! > 0{
+            self.sendMessage(message: self.messageTxt.text!)
+            self.messageTxt.text = ""
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -116,12 +122,17 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let newMessage = textField.text
         if (newMessage?.characters.count)! > 0 {
-            FirechatManager.sharedManager.sendNewMessage(message: newMessage!)
             textField.text = ""
-            self.tableViewScrollToBottom(animated: true)
+            self.sendMessage(message: newMessage!)
         }
         textField.resignFirstResponder()
         return true
+    }
+    
+    func sendMessage(message: String)
+    {
+        FirechatManager.sharedManager.sendNewMessage(message: message)
+        self.tableViewScrollToBottom(animated: true)
     }
     
     func tableViewScrollToBottom(animated: Bool) {
