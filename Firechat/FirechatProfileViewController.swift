@@ -52,6 +52,7 @@ class FirechatProfileViewController: UIViewController {
         self.status.isHidden = true
         self.editStatusButton.isHidden = true
         self.statusTextField.isHidden = false
+        self.statusTextField.text = ""
         self.statusTextField.becomeFirstResponder()
     }
     
@@ -59,7 +60,11 @@ class FirechatProfileViewController: UIViewController {
         if textField.text?.characters.count == 0{
             return false
         }
-        FirechatManager.sharedManager.updateUserStatus(status: textField.text!)
+        FirechatManager.sharedManager.updateUserStatus(status: textField.text!) { (result) in
+            if result{
+                self.status.text = textField.text!
+            }
+        }
         self.status.isHidden = false
         self.editStatusButton.isHidden = false
         self.statusTextField.isHidden = true
@@ -69,13 +74,13 @@ class FirechatProfileViewController: UIViewController {
     
     func keyboardWasShown(notification: NSNotification){
         let frame = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        animateViewMoving(up: true, moveValue: frame.height)
+        animateViewMoving(up: true, moveValue: frame.height-100)
         
     }
     
     func keyboardWillBeHidden(notification: NSNotification){
         let frame = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        animateViewMoving(up: false, moveValue: frame.height)
+        animateViewMoving(up: false, moveValue: frame.height+100)
     }
     
     func animateViewMoving (up:Bool, moveValue :CGFloat){

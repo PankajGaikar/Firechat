@@ -427,11 +427,23 @@
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="uNK-7V-f2N">
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uwg-FU-IQQ">
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="prF-kb-GRZ">
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uwg-FU-IQQ">
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:12pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Uw-iV-w7Q">
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="50" id="6Z2-My-wHE"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Last Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ifa-CN-Py4">
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                                     <nil key="textColor"/>
@@ -454,6 +466,7 @@
                                     <outlet property="contactName" destination="uwg-FU-IQQ" id="qpT-dk-iSD"/>
                                     <outlet property="message" destination="ifa-CN-Py4" id="9Md-E5-g6k"/>
                                     <outlet property="profileImage" destination="Mda-C2-Bih" id="rBL-54-br6"/>
+                                    <outlet property="time" destination="7Uw-iV-w7Q" id="bm0-g9-k9G"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -525,12 +538,12 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email id" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkw-oq-lZ2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email id" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkw-oq-lZ2">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="TlM-IA-G9s"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
@@ -539,12 +552,12 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEy-T6-2Fj">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEy-T6-2Fj">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="kip-Rh-gxB"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
@@ -563,6 +576,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nT-hi-LGD">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="41" id="n3n-4d-gHu"/>
                                 </constraints>
@@ -571,9 +585,9 @@
                                     <action selector="editStatusAction:" destination="uZU-c4-Xli" eventType="touchUpInside" id="Hdp-yO-73o"/>
                                 </connections>
                             </button>
-                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GTi-j5-Ba5">
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="User Status" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GTi-j5-Ba5">
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="uZU-c4-Xli" id="spf-NP-TYh"/>
@@ -583,25 +597,25 @@
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="wEy-T6-2Fj" firstAttribute="top" secondItem="jkw-oq-lZ2" secondAttribute="bottom" constant="5" id="2Cc-fr-8uX"/>
-                            <constraint firstItem="GTi-j5-Ba5" firstAttribute="width" secondItem="wEy-T6-2Fj" secondAttribute="width" id="4cN-sb-nYj"/>
                             <constraint firstItem="yNH-bD-Dqn" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="697-dd-3qk"/>
                             <constraint firstItem="iux-fS-D0O" firstAttribute="top" secondItem="rdx-U9-cgc" secondAttribute="bottom" constant="15" id="7cN-dE-vr4"/>
                             <constraint firstItem="iux-fS-D0O" firstAttribute="centerX" secondItem="69C-u6-X76" secondAttribute="centerX" id="CVF-Xr-Qkh"/>
                             <constraint firstItem="wEy-T6-2Fj" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="Duo-29-99R"/>
-                            <constraint firstItem="GTi-j5-Ba5" firstAttribute="centerX" secondItem="wEy-T6-2Fj" secondAttribute="centerX" id="EyW-GA-6PP"/>
                             <constraint firstAttribute="trailingMargin" secondItem="jkw-oq-lZ2" secondAttribute="trailing" constant="10" id="JJa-Ll-m0X"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="wEy-T6-2Fj" secondAttribute="trailing" constant="10" id="LXa-af-i0u"/>
                             <constraint firstItem="GTi-j5-Ba5" firstAttribute="centerY" secondItem="wEy-T6-2Fj" secondAttribute="centerY" id="Osv-bc-LAL"/>
                             <constraint firstItem="9nT-hi-LGD" firstAttribute="centerY" secondItem="wEy-T6-2Fj" secondAttribute="centerY" id="R6Y-KY-ed6"/>
+                            <constraint firstItem="9nT-hi-LGD" firstAttribute="trailing" secondItem="jkw-oq-lZ2" secondAttribute="trailing" id="RP5-Sv-1YS"/>
                             <constraint firstItem="oh3-28-57a" firstAttribute="centerX" secondItem="69C-u6-X76" secondAttribute="centerX" id="Rmb-OD-GtJ"/>
                             <constraint firstItem="GTi-j5-Ba5" firstAttribute="height" secondItem="wEy-T6-2Fj" secondAttribute="height" id="T3z-oV-Slq"/>
                             <constraint firstItem="ae5-JL-p4x" firstAttribute="top" secondItem="oh3-28-57a" secondAttribute="bottom" constant="20" id="ZOj-04-SQI"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yNH-bD-Dqn" secondAttribute="trailing" constant="10" id="cIy-LY-PCC"/>
+                            <constraint firstItem="GTi-j5-Ba5" firstAttribute="leading" secondItem="jkw-oq-lZ2" secondAttribute="leading" id="d9G-Y1-xO3"/>
                             <constraint firstItem="jkw-oq-lZ2" firstAttribute="top" secondItem="yNH-bD-Dqn" secondAttribute="bottom" constant="20" id="fca-9C-Ap7"/>
                             <constraint firstItem="jkw-oq-lZ2" firstAttribute="leading" secondItem="69C-u6-X76" secondAttribute="leadingMargin" constant="10" id="itE-hd-m9m"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="9nT-hi-LGD" secondAttribute="trailing" constant="3" id="m6R-rt-IcI"/>
                             <constraint firstItem="yNH-bD-Dqn" firstAttribute="top" secondItem="iux-fS-D0O" secondAttribute="bottom" constant="30" id="obV-yq-6oV"/>
+                            <constraint firstItem="wEy-T6-2Fj" firstAttribute="trailing" secondItem="jkw-oq-lZ2" secondAttribute="trailing" id="r5S-8p-hBN"/>
                             <constraint firstItem="9nT-hi-LGD" firstAttribute="height" secondItem="wEy-T6-2Fj" secondAttribute="height" id="te1-EN-e7f"/>
+                            <constraint firstItem="GTi-j5-Ba5" firstAttribute="trailing" secondItem="jkw-oq-lZ2" secondAttribute="trailing" id="uZV-Uc-1V4"/>
                         </constraints>
                     </view>
                     <connections>
@@ -937,6 +951,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="4Sx-Y6-d2k"/>
-        <segue reference="lX5-QX-iIE"/>
+        <segue reference="QSs-Ym-dwm"/>
     </inferredMetricsTieBreakers>
 </document>

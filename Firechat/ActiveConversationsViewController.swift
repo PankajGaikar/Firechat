@@ -12,16 +12,17 @@ import FirebaseAuth
 
 class ActiveConversationsViewController: UITableViewController
 {
-    
     @IBOutlet weak var currentUserButton: UIButton!
     var users = NSMutableArray.init()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Firechat"
+
         self.navigationItem.hidesBackButton = true
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        self.title = "Firechat"
+        
         self.currentUserButton.frame = CGRect.init(x: 0, y: 0, width: 35, height: 35)
         self.currentUserButton.cornerRadius = 17.5
         
@@ -35,6 +36,7 @@ class ActiveConversationsViewController: UITableViewController
         
         FirechatManager.sharedManager.fetchActiveConvoContactKeys { (keys) in
             let keysArray = keys.allKeys as NSArray
+
             for index in 0 ..< keysArray.count
             {
                 FirechatManager.sharedManager.fetchContactForKey(contactKey: keysArray.object(at: index) as! (String), CompletionHandler: { (contact) in
@@ -42,6 +44,7 @@ class ActiveConversationsViewController: UITableViewController
                     dict.setValue(contact, forKey: "Contact")
                     let status = keys.object(forKey: keysArray.object(at: index)) as! NSDictionary
                     dict.setValue(status.object(forKey: "LastMessage"), forKey: "LastMessage")
+                    dict.setValue(status.object(forKey: "time"), forKey: "time")
                     var flag = 0;
                     for index in 0 ..< self.users.count
                     {
@@ -57,10 +60,19 @@ class ActiveConversationsViewController: UITableViewController
                     if flag == 0{
                         self.users.add(dict)
                     }
-                    self.tableView.reloadData()
+                    if( index == keysArray.count-1 ){
+                        self.sortUsersWithTime()
+                        self.tableView.reloadData()
+                    }
                 })
             }
         }
+    }
+    
+    func sortUsersWithTime() {
+        let descriptor: NSSortDescriptor = NSSortDescriptor(key: "time", ascending: false)
+        let sortedResults = self.users.sortedArray(using: [descriptor]) as NSArray
+        self.users = sortedResults.mutableCopy() as! NSMutableArray
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -78,6 +90,7 @@ class ActiveConversationsViewController: UITableViewController
         cell.profileImage.imageFromServerURL(urlString: user.userPhotoURI)
         cell.contactName.text = user.username
         cell.message.text = dict.value(forKey: "LastMessage") as? String
+        cell.time.text = formatDate(date: dict.value(forKey: "time") as! Double)
         return cell;
     }
     
@@ -89,6 +102,14 @@ class ActiveConversationsViewController: UITableViewController
         let viewController = storyboard.instantiateViewController(withIdentifier: "ConversationsViewController") as! ConversationsViewController
         viewController.otherUser = user
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func formatDate(date: Double) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = NSTimeZone.local
+        dateFormatter.dateFormat = "hh:mm a"
+        let time = dateFormatter.string(from: NSDate(timeIntervalSince1970: date/1000) as Date)
+        return time as String
     }
     
     @IBAction func profileButtonAction(_ sender: AnyObject) {

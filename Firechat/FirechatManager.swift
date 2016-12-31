@@ -37,9 +37,13 @@ class FirechatManager: NSObject
             messagesReference = databaseReference.child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages")
             usersReference = databaseReference.child("users")
             conversationNode = messagesReference
-            fetchContactForKey(contactKey: (FIRAuth.auth()?.currentUser?.uid)!) { (contact) in
-                self.currentUser = contact
-            }
+            self.fetchCurrentUser()
+        }
+    }
+    
+    func fetchCurrentUser() {
+        fetchContactForKey(contactKey: (FIRAuth.auth()?.currentUser?.uid)!) { (contact) in
+            self.currentUser = contact
         }
     }
     
@@ -150,7 +154,11 @@ class FirechatManager: NSObject
             for index in 0 ..< keysArray.count
             {
                 let contact = allContactsDictionary.object(forKey: keysArray.object(at: index)) as! NSDictionary
-                allContacts.add(FirechatMappingModel.init().mapUserObject(user: contact))
+                let mappedContact = FirechatMappingModel.init().mapUserObject(user: contact) as FirechatContact
+                if mappedContact.emailID != self.currentUser.emailID
+                {
+                    allContacts.add(mappedContact)
+                }
             }
             CompletionHandler(allContacts as NSArray)
         }) { (error) in
@@ -211,14 +219,15 @@ class FirechatManager: NSObject
         convo.setValue(["sender": sender,
                         "Message": message,
                         "time": timestamp] )
-        self.messagesReference.child(self.activeConvoWithUser.userKey).updateChildValues(["LastMessage": message])
-        FIRDatabase.database().reference().child("users").child(self.activeConvoWithUser.userKey).child("Messages").child(self.currentUser.userKey).updateChildValues(["LastMessage": message])
+        self.messagesReference.child(self.activeConvoWithUser.userKey).updateChildValues(["LastMessage": message, "time": timestamp])
+        FIRDatabase.database().reference().child("users").child(self.activeConvoWithUser.userKey).child("Messages").child(self.currentUser.userKey).updateChildValues(["LastMessage": message, "time": timestamp])
     }
     
-    func updateUserStatus(status: String) {
+    func updateUserStatus(status: String, CompletionHandler: @escaping (Bool) -> ()) {
         let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid)
         child.updateChildValues(["status": status])
-
+        self.fetchCurrentUser()
+        CompletionHandler(true)
     }
     
 }
