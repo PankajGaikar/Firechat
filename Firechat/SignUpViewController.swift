@@ -20,22 +20,28 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var usernameTxt: UITextField!
     @IBOutlet weak var emailTxt: UITextField!
     @IBOutlet weak var passwordTxt: UITextField!
+    
+    var keyboardFrame: CGRect = CGRect.init()
+    
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Firechat"
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        self.title = "Firechat"
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(imageTapped(img:)))
+        
         profileImage.isUserInteractionEnabled = true
         profileImage.addGestureRecognizer(tapGestureRecognizer)
         picker.delegate = self
         self.hideKeyboardWhenTappedAround()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     }
     
-    @IBAction func signInAction(_ sender: AnyObject) {
-       _ = self.dismiss(animated: true, completion: nil)
+    override func viewDidAppear(_ animated: Bool) {
+        self.scrollview.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     @IBAction func signUpAction(_ sender: AnyObject) {
@@ -45,7 +51,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         FirechatManager.sharedManager.signUpWithFirechat(username: self.usernameTxt.text!,email: self.emailTxt.text! ,password: self.passwordTxt.text!, image: self.profileImage.image!) { (result) in
             var success: Bool = false
             if( result.value(forKey: "success") != nil ){
-                success = result.value(forKey: "result") as! Bool
+                success = result.value(forKey: "success") as! Bool
             }
             
             var error: NSError? = nil
@@ -110,10 +116,22 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         return true
     }
     
+    func keyboardWasShown(notification: NSNotification){
+        keyboardFrame = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+    }
+
     func textFieldDidBeginEditing(_ textField: UITextField)
     {
-        let point: CGPoint = CGPoint(x: 0, y:textField.frame.origin.y-110)
-        self.scrollview.setContentOffset(point, animated: true)
+        print("Printing\(textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y)")
+        print("Printing\((textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) - keyboardFrame.origin.y)")
+
+        if (textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) > keyboardFrame.origin.y {
+            if( ((textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) - keyboardFrame.origin.y) < 150 )
+            {
+                let point: CGPoint = CGPoint(x: 0, y: ((textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) - keyboardFrame.origin.y))
+                self.scrollview.setContentOffset(point, animated: true)
+            }
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)

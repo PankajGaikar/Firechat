@@ -16,16 +16,24 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loader: UIActivityIndicatorView!
     @IBOutlet weak var emailIdTxt: UITextField!
     @IBOutlet weak var passwordTxt: UITextField!
+    var keyboardFrame: CGRect = CGRect.init()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Firechat"
         self.navigationItem.hidesBackButton = true
+        self.navigationItem.backBarButtonItem?.title = ""
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        self.title = "Firechat"
         self.hideKeyboardWhenTappedAround()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        self.scrollView.contentSize = self.parentView.frame.size
+        self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
+    
     @IBAction func signInAction(_ sender: AnyObject) {
         self.loader.startAnimating()
         self.loader.isHidden = false
@@ -33,7 +41,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         FirechatManager.sharedManager.signInToFirechat(username: emailIdTxt.text!, password: passwordTxt.text!) { (result) in
             var success: Bool = false
             if( result.value(forKey: "success") != nil ){
-                success = result.value(forKey: "result") as! Bool
+                success = result.value(forKey: "success") as! Bool
             }
 
             var error: NSError? = nil
@@ -80,8 +88,14 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField)
     {
-        let point: CGPoint = CGPoint(x: 0, y:textField.frame.origin.y)
-        self.scrollView.setContentOffset(point, animated: true)
+        //If textfield is hiding below textfield, pull textfield on visible part off the screen by setting offset
+        if (textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) > keyboardFrame.origin.y {
+            if( ((textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) - keyboardFrame.origin.y) < 150 )
+            {
+                let point: CGPoint = CGPoint(x: 0, y: ((textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) - keyboardFrame.origin.y))
+                self.scrollView.setContentOffset(point, animated: true)
+            }
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)

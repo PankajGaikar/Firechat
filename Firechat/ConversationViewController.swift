@@ -21,6 +21,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var messageTxt: UITextField!
     
     override func viewDidLoad() {
+        self.title = self.otherUser.username
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
@@ -28,12 +29,11 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         otherUserButton.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
         otherUserButton.cornerRadius = 17.5
         otherUserButton.addTarget(self, action: #selector(self.showOtherProfile), for: .touchUpInside)
-        
         let rightBarButton = UIBarButtonItem()
         rightBarButton.customView = otherUserButton
-        
         self.navigationItem.rightBarButtonItem = rightBarButton
         
+        self.currentUser = FirechatManager.sharedManager.currentUser
         URLSession.shared.dataTask(with: NSURL(string: self.otherUser.userPhotoURI)! as URL, completionHandler: { (data, response, error) -> Void in
             
             if error != nil {
@@ -46,8 +46,6 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
             })
         }).resume()
         
-        self.title = self.otherUser.username
-        self.currentUser = FirechatManager.sharedManager.currentUser
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 50.0;
         self.hideKeyboardWhenTappedAround()
@@ -158,11 +156,9 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     func animateViewMoving (up:Bool, moveValue :CGFloat){
         let movementDuration:TimeInterval = 0.3
         let movement:CGFloat = ( up ? -moveValue : moveValue)
-        
         UIView.beginAnimations("animateView", context: nil)
         UIView.setAnimationBeginsFromCurrentState(true)
         UIView.setAnimationDuration(movementDuration)
-        
         self.view.frame = self.view.frame.offsetBy(dx: 0, dy: movement)
         UIView.commitAnimations()
     }

@@ -74,7 +74,7 @@ class ActiveConversationsViewController: UITableViewController
         let sortedResults = self.users.sortedArray(using: [descriptor]) as NSArray
         self.users = sortedResults.mutableCopy() as! NSMutableArray
     }
-    
+        
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
