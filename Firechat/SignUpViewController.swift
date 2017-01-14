@@ -26,7 +26,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     let picker = UIImagePickerController()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Firechat"
+        self.title = Firechat
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
@@ -41,6 +41,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        self.scrollview.contentSize = self.parentView.frame.size
         self.scrollview.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
@@ -122,9 +123,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     func textFieldDidBeginEditing(_ textField: UITextField)
     {
-        print("Printing\(textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y)")
-        print("Printing\((textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) - keyboardFrame.origin.y)")
-
         if (textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) > keyboardFrame.origin.y {
             if( ((textField.frame.origin.y + textField.frame.size.height + 20 + self.parentView.frame.origin.y) - keyboardFrame.origin.y) < 150 )
             {

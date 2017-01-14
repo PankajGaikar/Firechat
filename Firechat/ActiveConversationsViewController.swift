@@ -16,7 +16,7 @@ class ActiveConversationsViewController: UITableViewController
     var users = NSMutableArray.init()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Firechat"
+        self.title = Firechat
 
         self.navigationItem.hidesBackButton = true
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)
@@ -43,8 +43,8 @@ class ActiveConversationsViewController: UITableViewController
                     let dict: NSMutableDictionary = NSMutableDictionary()
                     dict.setValue(contact, forKey: "Contact")
                     let status = keys.object(forKey: keysArray.object(at: index)) as! NSDictionary
-                    dict.setValue(status.object(forKey: "LastMessage"), forKey: "LastMessage")
-                    dict.setValue(status.object(forKey: "time"), forKey: "time")
+                    dict.setValue(status.object(forKey: FirechatLastMessageString), forKey: FirechatLastMessageString)
+                    dict.setValue(status.object(forKey: FirechatTimeString), forKey: FirechatTimeString)
                     var flag = 0;
                     for index in 0 ..< self.users.count
                     {
@@ -70,7 +70,7 @@ class ActiveConversationsViewController: UITableViewController
     }
     
     func sortUsersWithTime() {
-        let descriptor: NSSortDescriptor = NSSortDescriptor(key: "time", ascending: false)
+        let descriptor: NSSortDescriptor = NSSortDescriptor(key: FirechatTimeString, ascending: false)
         let sortedResults = self.users.sortedArray(using: [descriptor]) as NSArray
         self.users = sortedResults.mutableCopy() as! NSMutableArray
     }
@@ -89,8 +89,8 @@ class ActiveConversationsViewController: UITableViewController
         let user = dict.object(forKey: "Contact") as! FirechatContact
         cell.profileImage.imageFromServerURL(urlString: user.userPhotoURI)
         cell.contactName.text = user.username
-        cell.message.text = dict.value(forKey: "LastMessage") as? String
-        cell.time.text = formatDate(date: dict.value(forKey: "time") as! Double)
+        cell.message.text = dict.value(forKey: FirechatLastMessageString) as? String
+        cell.time.text = formatDate(date: dict.value(forKey: FirechatTimeString) as! Double)
         return cell;
     }
     

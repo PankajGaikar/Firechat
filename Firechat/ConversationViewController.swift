@@ -26,7 +26,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         let otherUserButton = UIButton(frame: CGRect(x: 100, y: 100, width: 35, height: 35))
-        otherUserButton.setBackgroundImage(UIImage.init(named: "user_placeholder.png"), for: .normal)
+        otherUserButton.setBackgroundImage(#imageLiteral(resourceName: "user_placeholder"), for: .normal)
         otherUserButton.cornerRadius = 17.5
         otherUserButton.addTarget(self, action: #selector(self.showOtherProfile), for: .touchUpInside)
         let rightBarButton = UIBarButtonItem()
@@ -56,13 +56,13 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         }
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(activeConvoObserver), name: NSNotification.Name(rawValue: "activeConvoObserver"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(activeConvoObserver), name: NSNotification.Name(rawValue: NSNOTIFICATION_ActiveConvoObserver), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "activeConvoObserver"), object: nil);
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NSNOTIFICATION_ActiveConvoObserver), object: nil);
         FirechatManager.sharedManager.removeActiveConvoObserver()
     }
     
@@ -88,23 +88,23 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let messageBundle = self.convoList.object(at: indexPath.row) as! NSDictionary
-        let sender = messageBundle.object(forKey: "sender") as! String
+        let sender = messageBundle.object(forKey: FirechatSenderString) as! String
         if sender == (self.currentUser.userKey)
         {
             let cell: MessageFromMeCell = tableView.dequeueReusableCell(withIdentifier: "Me", for: indexPath) as! MessageFromMeCell
-            cell.message.text = messageBundle.object(forKey: "Message") as? String
+            cell.message.text = messageBundle.object(forKey: FirechatMessageTextString) as? String
             cell.profileImage.imageFromServerURL(urlString: self.currentUser.userPhotoURI)
-            cell.timestamp.text = self.formatDate(date: messageBundle.value(forKey: "time") as! Double)
+            cell.timestamp.text = self.formatDate(date: messageBundle.value(forKey: FirechatTimeString) as! Double)
             return cell
         }
         else
         {
             let cell: MessageFromYouCell = tableView.dequeueReusableCell(withIdentifier: "You", for: indexPath) as! MessageFromYouCell
-            cell.message.text = messageBundle.object(forKey: "Message") as? String
+            cell.message.text = messageBundle.object(forKey: FirechatMessageTextString) as? String
             cell.profileImage.imageFromServerURL(urlString: self.otherUser.userPhotoURI)
-            let x:Double = messageBundle.value(forKey: "time") as! Double
+            let x:Double = messageBundle.value(forKey: FirechatTimeString) as! Double
             print(NSDate(timeIntervalSince1970: x/1000))
-            cell.timestamp.text = self.formatDate(date: messageBundle.value(forKey: "time") as! Double)
+            cell.timestamp.text = self.formatDate(date: messageBundle.value(forKey: FirechatTimeString) as! Double)
             return cell
         }
     }

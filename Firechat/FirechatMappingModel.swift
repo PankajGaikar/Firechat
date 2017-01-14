@@ -12,14 +12,14 @@ class FirechatMappingModel: NSObject {
     func mapUserObject(user: NSDictionary) -> FirechatContact
     {
         let contact = FirechatContact.init();
-        contact.emailID = user.value(forKey: "email") as! String
-        contact.username = user.value(forKey: "username") as! String
-        contact.userKey = user.value(forKey: "key") as! String
-        let convoKeys: NSDictionary = (user.value(forKey: "Messages") != nil) ? user.value(forKey: "Messages") as! NSDictionary : NSDictionary.init()
+        contact.emailID = user.value(forKey: FirechatEmailString) as! String
+        contact.username = user.value(forKey: FirechatUserNameString) as! String
+        contact.userKey = user.value(forKey: FirechatKeyString) as! String
+        let convoKeys: NSDictionary = (user.value(forKey: FirechatMessagesString) != nil) ? user.value(forKey: FirechatMessagesString) as! NSDictionary : NSDictionary.init()
         contact.convoKeys = convoKeys.allValues as NSArray
-        contact.userPhotoURI = user.value(forKey: "userPhoto") as! String
-        if (user.value(forKey: "status") != nil){
-            contact.status = user.value(forKey: "status") as! String
+        contact.userPhotoURI = user.value(forKey: FirechatUserPhotoString) as! String
+        if (user.value(forKey: FirechatStatusString) != nil){
+            contact.status = user.value(forKey: FirechatStatusString) as! String
         }
         return contact
     }

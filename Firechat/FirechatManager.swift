@@ -34,8 +34,8 @@ class FirechatManager: NSObject
     func initializeNodes() {
         if(( FIRAuth.auth()?.currentUser ) != nil)
         {
-            messagesReference = databaseReference.child("users").child(FIRAuth.auth()!.currentUser!.uid).child("Messages")
-            usersReference = databaseReference.child("users")
+            messagesReference = databaseReference.child(FirechatUsersString).child(FIRAuth.auth()!.currentUser!.uid).child(FirechatMessagesString)
+            usersReference = databaseReference.child(FirechatUsersString)
             conversationNode = messagesReference
             self.fetchCurrentUser()
         }
@@ -77,7 +77,7 @@ class FirechatManager: NSObject
             {
                 var data = NSData()
                 data = UIImageJPEGRepresentation(image, 0.8)! as NSData
-                let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\("userPhoto")"
+                let filePath = "\(FIRAuth.auth()!.currentUser!.uid)/\(FirechatUserPhotoString)"
                 let metaData = FIRStorageMetadata()
                 metaData.contentType = "image/jpg"
                 
@@ -102,12 +102,12 @@ class FirechatManager: NSObject
                             }
                         }
                         //store downloadURL at database
-                        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid)
-                        child.updateChildValues(["userPhoto": downloadURL! as String])
-                        child.updateChildValues(["username": username])
-                        child.updateChildValues(["email": email])
-                        child.updateChildValues(["key": child.key as String])
-                        child.updateChildValues(["status": "Hey there! I'm using Firechat"])
+                        let child = FIRDatabase.database().reference().child(FirechatUsersString).child(FIRAuth.auth()!.currentUser!.uid)
+                        child.updateChildValues([FirechatUserPhotoString: downloadURL! as String])
+                        child.updateChildValues([FirechatUserNameString: username])
+                        child.updateChildValues([FirechatEmailString: email])
+                        child.updateChildValues([FirechatKeyString: child.key as String])
+                        child.updateChildValues([FirechatStatusString: FirechatDefaultStatus])
                         
                         self.initializeNodes()
                         CompletionHandler(["success": true])
@@ -135,7 +135,7 @@ class FirechatManager: NSObject
     
     func fetchContactForKey(contactKey: (String), CompletionHandler: @escaping (FirechatContact) -> () )
     {
-        let ref = FIRDatabase.database().reference().child("users").child(contactKey)
+        let ref = FIRDatabase.database().reference().child(FirechatUsersString).child(contactKey)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if(snapshot.hasChildren())
             {
@@ -173,16 +173,16 @@ class FirechatManager: NSObject
         node.child(user.userKey).observeSingleEvent(of: .value, with: { (snapshot) in
             if(snapshot.hasChildren())
             {
-                print("Item exists\(snapshot.value)")
+                print("Node exists\(snapshot.value)")
                 let response = snapshot.value as! NSDictionary
-                self.conversationNode = FIRDatabase.database().reference().child("Conversations").child(response.object(forKey: "ConvoKey") as! String)
+                self.conversationNode = FIRDatabase.database().reference().child(FirechatConversationsString).child(response.object(forKey: FirechatConvoKeyString) as! String)
             }
             else
             {
-                self.conversationNode = FIRDatabase.database().reference().child("Conversations").childByAutoId()
-                node.child(user.userKey).setValue(["ConvoKey": self.conversationNode.key])
+                self.conversationNode = FIRDatabase.database().reference().child(FirechatConversationsString).childByAutoId()
+                node.child(user.userKey).setValue([FirechatConvoKeyString: self.conversationNode.key])
                 //Add node to user profile
-                FIRDatabase.database().reference().child("users").child(user.userKey).child("Messages").child(self.currentUser.userKey).updateChildValues(["ConvoKey": self.conversationNode.key])
+                FIRDatabase.database().reference().child(FirechatUsersString).child(user.userKey).child(FirechatMessagesString).child(self.currentUser.userKey).updateChildValues([FirechatConvoKeyString: self.conversationNode.key])
             }
             self.startObservingActiveConvo()
             CompletionHandler(true)
@@ -196,7 +196,7 @@ class FirechatManager: NSObject
         self.conversationNode.observe(.childAdded, with: { snapshot in
             if snapshot.hasChildren() {
                 let message = snapshot.value as! NSDictionary
-                let notificationName = Notification.Name("activeConvoObserver")
+                let notificationName = Notification.Name(NSNOTIFICATION_ActiveConvoObserver)
                 NotificationCenter.default.post(name: notificationName, object: message)
             }
         }){ (error) in
@@ -216,16 +216,16 @@ class FirechatManager: NSObject
         
         let sender = self.currentUser.userKey
         let timestamp = FIRServerValue.timestamp()
-        convo.setValue(["sender": sender,
-                        "Message": message,
-                        "time": timestamp] )
-        self.messagesReference.child(self.activeConvoWithUser.userKey).updateChildValues(["LastMessage": message, "time": timestamp])
-        FIRDatabase.database().reference().child("users").child(self.activeConvoWithUser.userKey).child("Messages").child(self.currentUser.userKey).updateChildValues(["LastMessage": message, "time": timestamp])
+        convo.setValue([FirechatSenderString: sender,
+                        FirechatMessageTextString: message,
+                        FirechatTimeString: timestamp] )
+        self.messagesReference.child(self.activeConvoWithUser.userKey).updateChildValues([FirechatLastMessageString: message, FirechatTimeString: timestamp])
+        FIRDatabase.database().reference().child(FirechatUsersString).child(self.activeConvoWithUser.userKey).child(FirechatMessagesString).child(self.currentUser.userKey).updateChildValues([FirechatLastMessageString: message, FirechatTimeString: timestamp])
     }
     
     func updateUserStatus(status: String, CompletionHandler: @escaping (Bool) -> ()) {
-        let child = FIRDatabase.database().reference().child("users").child(FIRAuth.auth()!.currentUser!.uid)
-        child.updateChildValues(["status": status])
+        let child = FIRDatabase.database().reference().child(FirechatUsersString).child(FIRAuth.auth()!.currentUser!.uid)
+        child.updateChildValues([FirechatStatusString: status])
         self.fetchCurrentUser()
         CompletionHandler(true)
     }

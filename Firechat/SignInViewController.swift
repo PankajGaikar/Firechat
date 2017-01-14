@@ -20,7 +20,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Firechat"
+        self.title = Firechat
         self.navigationItem.hidesBackButton = true
         self.navigationItem.backBarButtonItem?.title = ""
         navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 255.0/255.0, green: 204.0/255.0, blue: 46.0/255.0, alpha: 1.0)

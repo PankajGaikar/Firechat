@@ -17,26 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
         FIRApp.configure()
-//        self.window = UIWindow(frame: UIScreen.main.bounds)
-
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        
-//        var viewController: UIViewController;
-//        if( FIRAuth.auth()?.currentUser != nil)
-//        {
-//            viewController = storyboard.instantiateViewController(withIdentifier: "ActiveConversationsViewController") as! ActiveConversationsViewController
-////            let navController = UINavigationController.init(rootViewController: viewController)
-//            self.window?.rootViewController = viewController
-//        }
-//        else
-//        {
-//            viewController = storyboard.instantiateViewController(withIdentifier: "SignInViewController") as! SignInViewController
-//            self.window?.rootViewController = viewController
-//        }
-//        self.window?.makeKeyAndVisible()
-        
         return true
     }
 
@@ -74,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
          */
-        let container = NSPersistentContainer(name: "Firechat")
+        let container = NSPersistentContainer(name: Firechat)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
