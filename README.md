@@ -1,8 +1,19 @@
 # Firechat
-Simple chat application with Firebase as backend.
-Used Firebase logo as color scheme to theme the application.
+- Simple chat application with Firebase as backend.
+- Used Firebase logo as color scheme to theme the application.
+- User can see all conversations created with the applications. Users can interact with all the available contacts
+- User can edit status, can chose profile picture. 
+- Lots of stuff. 
 
-I have used a datamodel that will effectively avoid redundacy of chat database. Below is snapshot of datamodel.
+I have used a datamodel that will effectively avoid redundacy of chat database. 
+- Created 2 head nodes
+    - Conversations
+    - Users
+- Users node contains personal information of the user. Every user has a sub-node "Messages" which contains a key to all of his active conversation nodes
+
+
+
+- Below is snapshot of datamodel.
 ![alt tag](https://github.com/PankajGaikar/Firechat/blob/master/FIrebaseModel/Firechat-Database.jpg)
 
 Below are some screen shots.
